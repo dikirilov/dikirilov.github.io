@@ -4,6 +4,47 @@
     <title>Учим слоги!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* Add fireworks animation */
+        @keyframes firework {
+            0% {
+                opacity: 1;
+                transform: scale(0.2) translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1) translateY(-20px);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.5) translateY(-40px);
+            }
+        }
+
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, #ffcc00 60%, transparent 100%);
+            border-radius: 50%;
+            animation: firework 0.8s ease-out forwards;
+        }
+
+        /* Optional: Random colors for each firework */
+        .firework:nth-child(1) {
+            background: radial-gradient(circle, #ff0000 60%, transparent 100%);
+        }
+        .firework:nth-child(2) {
+            background: radial-gradient(circle, #00ff00 60%, transparent 100%);
+        }
+        .firework:nth-child(3) {
+            background: radial-gradient(circle, #0000ff 60%, transparent 100%);
+        }
+        .firework:nth-child(4) {
+            background: radial-gradient(circle, #ff00ff 60%, transparent 100%);
+        }
+        .firework:nth-child(5) {
+            background: radial-gradient(circle, #00ffff 60%, transparent 100%);
+        }
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             background-color: #f0f9ff;
@@ -44,7 +85,7 @@
             background: #93c5fd;
             padding: 8px 16px;
             border-radius: 10px;
-            font-size: clamp(18px, 4vw, 24px);
+            font-size: clamp(24px, 6vw, 48px);
             display: inline-block;
         }
 
@@ -136,14 +177,22 @@
     </style>
 </head>
 <body>
+    <div class="celebration">
+        <!-- Add multiple firework elements -->
+        <div class="firework" style="top: 50%; left: 50%;"></div>
+        <div class="firework" style="top: 40%; left: 45%;"></div>
+        <div class="firework" style="top: 60%; left: 55%;"></div>
+        <div class="firework" style="top: 50%; left: 60%;"></div>
+        <div class="firework" style="top: 45%; left: 40%;"></div>
+    </div>
     <div class="container">
         <h1>Учим слоги 🎯</h1>
-        <div class="score">Счет: <span id="score">0</span></div>
+        <!-- <div class="score">Счет: <span id="score">0</span></div> -->
         <button class="play-button" onclick="playAudio()">▶️</button>
         <div class="word-display" id="wordDisplay"></div>
         <div class="syllable-cards" id="syllableCards"></div>
         <div class="feedback" id="feedback"></div>
-        <button class="next-button" id="nextButton" onclick="nextWord()">Дальше →</button>
+        <center><button class="next-button" id="nextButton" onclick="nextWord()">Дальше →</button></center>
     </div>
 
     <script>
@@ -249,7 +298,7 @@
                 feedback.textContent = '🎉 Отлично! 🌟';
                 wordDisplay.classList.add('celebration');
                 score++;
-                document.getElementById('score').textContent = score;
+                // document.getElementById('score').textContent = score;
                 document.getElementById('nextButton').style.display = 'block';
             } else {
                 feedback.textContent = '💫 Попробуй еще раз! 💫';
@@ -275,6 +324,29 @@
             currentWord = (currentWord + 1) % words.length;
             displayWord();
         }
+
+        function addFireworks() {
+            const celebration = document.querySelector('.celebration');
+            if (!celebration) return;
+
+            for (let i = 0; i < 5; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.top = `${Math.random() * 80 + 10}%`; // Random position
+                firework.style.left = `${Math.random() * 80 + 10}%`; // Random position
+                firework.style.animationDelay = `${i * 0.2}s`; // Staggered animations
+
+                celebration.appendChild(firework);
+
+                // Remove firework after animation ends
+                firework.addEventListener('animationend', () => {
+                    firework.remove();
+                });
+            }
+        }
+
+        // Trigger fireworks on the celebration event
+        document.querySelector('.celebration').addEventListener('animationstart', addFireworks);
 
         // Start the game by loading words
         loadWords();
