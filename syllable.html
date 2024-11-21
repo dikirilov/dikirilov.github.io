@@ -130,7 +130,7 @@
     </div>
 
     <script>
-        const words = [
+        const initial_words = [
             {
                 word: 'ПАША',
                 syllables: ['ПА', 'ША'],
@@ -185,8 +185,25 @@
                 word: 'ДЕДА',
                 syllables: ['ДЕ', 'ДА'],
                 audioUrl: '/api/placeholder/10/10'
+            },
+            {
+                word: 'ТАНЯ',
+                syllables: ['ТА', 'НЯ'],
+                audioUrl: '/api/placeholder/10/10'
+            },
+            {
+                word: 'ВАНЯ',
+                syllables: ['ВА', 'НЯ'],
+                audioUrl: '/api/placeholder/10/10'
+            },
+            {
+                word: 'СВЕТА',
+                syllables: ['СВЕ', 'ТА'],
+                audioUrl: '/api/placeholder/10/10'
             }
         ];
+
+        const words = shuffleArray(initial_words);
 
         const syllables = words
               .reduce((allSyllables, word) => [...allSyllables, ...word.syllables], [])
@@ -214,7 +231,7 @@
             selectedSyllables = [];
             
             // Display target word (you might want to hide this in a real game)
-            // targetWordDisplay.textContent = words[currentWord].word;
+            targetWordDisplay.textContent = words[currentWord].word;
 
             const otherSyllables = syllables.filter(s => !words[currentWord].syllables.includes(s));
             const randomCount = Math.floor(Math.random() * 3) + 3; // Random number between 3 and 5
