@@ -2,63 +2,79 @@
 <html>
 <head>
     <title>Учим слоги!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             background-color: #f0f9ff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 800px;
+            margin: 0 auto;
             text-align: center;
+            padding: 10px;
+        }
+
+        h1 {
+            font-size: clamp(24px, 5vw, 32px);
+            margin: 10px 0;
         }
 
         .score {
-            font-size: 24px;
+            font-size: clamp(18px, 4vw, 24px);
             color: #2563eb;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .word-display {
             min-height: 60px;
-            margin: 20px;
+            margin: 15px 0;
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
+            padding: 10px;
         }
 
         .selected-syllable {
             background: #93c5fd;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 10px;
-            font-size: 24px;
+            font-size: clamp(18px, 4vw, 24px);
             display: inline-block;
         }
 
         .syllable-cards {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
             justify-content: center;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .card {
             background: white;
             border: 3px solid #93c5fd;
             border-radius: 15px;
-            padding: 15px 25px;
-            font-size: 24px;
+            padding: 12px 20px;
+            font-size: clamp(18px, 4vw, 24px);
             cursor: pointer;
             transition: transform 0.2s;
+            touch-action: manipulation;
         }
 
-        .card:hover {
-            transform: scale(1.05);
+        .card:active {
+            transform: scale(0.95);
+        }
+
+        @media (hover: hover) {
+            .card:hover {
+                transform: scale(1.05);
+            }
         }
 
         .card.used {
@@ -71,21 +87,28 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            font-size: 24px;
+            width: 60px;
+            height: 60px;
+            font-size: clamp(18px, 4vw, 24px);
             cursor: pointer;
-            margin: 20px;
+            margin: 15px;
             transition: transform 0.2s;
+            touch-action: manipulation;
         }
 
-        .play-button:hover {
-            transform: scale(1.1);
+        .play-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (hover: hover) {
+            .play-button:hover {
+                transform: scale(1.1);
+            }
         }
 
         .feedback {
-            font-size: 24px;
-            margin: 20px;
+            font-size: clamp(18px, 4vw, 24px);
+            margin: 15px;
             min-height: 30px;
         }
 
@@ -95,9 +118,10 @@
             border: none;
             border-radius: 10px;
             padding: 10px 20px;
-            font-size: 20px;
+            font-size: clamp(16px, 3.5vw, 20px);
             cursor: pointer;
             display: none;
+            touch-action: manipulation;
         }
 
         @keyframes celebrate {
@@ -109,19 +133,12 @@
         .celebration {
             animation: celebrate 0.5s ease-in-out;
         }
-
-        .target-word {
-            font-size: 20px;
-            color: #666;
-            margin: 10px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Учим слоги 🎯</h1>
         <div class="score">Счет: <span id="score">0</span></div>
-        <!-- <div class="target-word">Target word: <span id="targetWord"></span></div> -->
         <button class="play-button" onclick="playAudio()">▶️</button>
         <div class="word-display" id="wordDisplay"></div>
         <div class="syllable-cards" id="syllableCards"></div>
@@ -130,88 +147,30 @@
     </div>
 
     <script>
-        const initial_words = [
-            {
-                word: 'ПАША',
-                syllables: ['ПА', 'ША'],
-                audioUrl: '/audio/ПАША.ogg'
-            },
-            {
-                word: 'ПАПА',
-                syllables: ['ПА', 'ПА'],
-                audioUrl: '/audio/ПАПА.ogg'
-            },
-            {
-                word: 'МАМА',
-                syllables: ['МА', 'МА'],
-                audioUrl: '/audio/МАМА.ogg'
-            },
-            {
-                word: 'САША',
-                syllables: ['СА', 'ША'],
-                audioUrl: '/audio/САША.ogg'
-            },
-            {
-                word: 'КАША',
-                syllables: ['КА', 'ША'],
-                audioUrl: '/audio/КАША.ogg'
-            },
-            {
-                word: 'МАША',
-                syllables: ['МА', 'ША'],
-                audioUrl: '/audio/МАША.ogg'
-            },
-            {
-                word: 'ДАША',
-                syllables: ['ДА', 'ША'],
-                audioUrl: '/audio/ДАША.ogg'
-            },
-            {
-                word: 'НАТАША',
-                syllables: ['НА', 'ТА', 'ША'],
-                audioUrl: '/audio/НАТАША.ogg'
-            },
-            {
-                word: 'ДИМА',
-                syllables: ['ДИ', 'МА'],
-                audioUrl: '/audio/ДИМА.ogg'
-            },
-            {
-                word: 'БАБА',
-                syllables: ['БА', 'БА'],
-                audioUrl: '/audio/БАБА.ogg'
-            },
-            {
-                word: 'ДЕДА',
-                syllables: ['ДЕ', 'ДА'],
-                audioUrl: '/audio/ДЕДА.ogg'
-            },
-            {
-                word: 'ТАНЯ',
-                syllables: ['ТА', 'НЯ'],
-                audioUrl: '/audio/ТАНЯ.ogg'
-            },
-            {
-                word: 'ВАНЯ',
-                syllables: ['ВА', 'НЯ'],
-                audioUrl: '/audio/ВАНЯ.ogg'
-            },
-            {
-                word: 'СВЕТА',
-                syllables: ['СВЕ', 'ТА'],
-                audioUrl: '/audio/СВЕТА.ogg'
-            }
-        ];
-
-        const words = shuffleArray(initial_words);
-
-        const syllables = words
-              .reduce((allSyllables, word) => [...allSyllables, ...word.syllables], [])
-              .filter((syllable, index, array) => array.indexOf(syllable) === index);
-
+        let words = [];
+        let syllables = [];
         let currentWord = 0;
         let score = 0;
         let selectedSyllables = [];
+
+        // Load words from JSON file
+        async function loadWords() {
+            try {
+                const response = await fetch('words.json');
+                const data = await response.json();
+                words = shuffleArray(data.words);
+                
+                // Extract unique syllables
+                syllables = words
+                    .reduce((allSyllables, word) => [...allSyllables, ...word.syllables], [])
+                    .filter((syllable, index, array) => array.indexOf(syllable) === index);
+                
+                displayWord();
+            } catch (error) {
+                console.error('Error loading words:', error);
+                document.getElementById('feedback').textContent = 'Ошибка загрузки данных';
+            }
+        }
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -224,17 +183,13 @@
         function displayWord() {
             const syllableCards = document.getElementById('syllableCards');
             const wordDisplay = document.getElementById('wordDisplay');
-            // const targetWordDisplay = document.getElementById('targetWord');
             
             syllableCards.innerHTML = '';
             wordDisplay.innerHTML = '';
             selectedSyllables = [];
             
-            // Display target word (you might want to hide this in a real game)
-            // targetWordDisplay.textContent = words[currentWord].word;
-
             const otherSyllables = syllables.filter(s => !words[currentWord].syllables.includes(s));
-            const randomCount = Math.floor(Math.random() * 3) + 3; // Random number between 3 and 5
+            const randomCount = Math.floor(Math.random() * 3) + 3;
             const additionalSyllables = otherSyllables
                 .sort(() => Math.random() - 0.5)
                 .slice(0, Math.min(randomCount, otherSyllables.length));
@@ -274,7 +229,6 @@
             const currentWordObj = words[currentWord];
             const correctSyllables = currentWordObj.syllables;
 
-            // Check if the selection is correct so far
             for (let i = 0; i < selectedSyllables.length; i++) {
                 if (selectedSyllables[i] !== correctSyllables[i]) {
                     showFeedback(false);
@@ -282,7 +236,6 @@
                 }
             }
 
-            // If all syllables are selected correctly
             if (selectedSyllables.length === correctSyllables.length) {
                 showFeedback(true);
             }
@@ -310,10 +263,10 @@
         }
 
         function playAudio() {
-            // In a real implementation, this would play the actual audio file
             const audio = new Audio(words[currentWord].audioUrl);
-            audio.play();
-            console.log('Playing audio for:', words[currentWord].word);
+            audio.play().catch(error => {
+                console.error('Error playing audio:', error);
+            });
         }
 
         function nextWord() {
@@ -323,8 +276,8 @@
             displayWord();
         }
 
-        // Start the game
-        displayWord();
+        // Start the game by loading words
+        loadWords();
     </script>
 </body>
 </html>

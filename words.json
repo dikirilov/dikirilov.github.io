@@ -1,0 +1,74 @@
+{
+  "words": [
+    {
+      "word": "ПАША",
+      "syllables": ["ПА", "ША"],
+      "audioUrl": "/audio/ПАША.ogg"
+    },
+    {
+      "word": "ПАПА",
+      "syllables": ["ПА", "ПА"],
+      "audioUrl": "/audio/ПАПА.ogg"
+    },
+    {
+      "word": "МАМА",
+      "syllables": ["МА", "МА"],
+      "audioUrl": "/audio/МАМА.ogg"
+    },
+    {
+      "word": "САША",
+      "syllables": ["СА", "ША"],
+      "audioUrl": "/audio/САША.ogg"
+    },
+    {
+      "word": "КАША",
+      "syllables": ["КА", "ША"],
+      "audioUrl": "/audio/КАША.ogg"
+    },
+    {
+      "word": "МАША",
+      "syllables": ["МА", "ША"],
+      "audioUrl": "/audio/МАША.ogg"
+    },
+    {
+      "word": "ДАША",
+      "syllables": ["ДА", "ША"],
+      "audioUrl": "/audio/ДАША.ogg"
+    },
+    {
+      "word": "НАТАША",
+      "syllables": ["НА", "ТА", "ША"],
+      "audioUrl": "/audio/НАТАША.ogg"
+    },
+    {
+      "word": "ДИМА",
+      "syllables": ["ДИ", "МА"],
+      "audioUrl": "/audio/ДИМА.ogg"
+    },
+    {
+      "word": "БАБА",
+      "syllables": ["БА", "БА"],
+      "audioUrl": "/audio/БАБА.ogg"
+    },
+    {
+      "word": "ДЕДА",
+      "syllables": ["ДЕ", "ДА"],
+      "audioUrl": "/audio/ДЕДА.ogg"
+    },
+    {
+      "word": "ТАНЯ",
+      "syllables": ["ТА", "НЯ"],
+      "audioUrl": "/audio/ТАНЯ.ogg"
+    },
+    {
+      "word": "ВАНЯ",
+      "syllables": ["ВА", "НЯ"],
+      "audioUrl": "/audio/ВАНЯ.ogg"
+    },
+    {
+      "word": "СВЕТА",
+      "syllables": ["СВЕ", "ТА"],
+      "audioUrl": "/audio/СВЕТА.ogg"
+    }
+  ]
+}
