@@ -318,7 +318,7 @@
             displayWord();
         }
 
-        function fireworkDot(firework) {
+        function fireworkDot(firework, i) {
             firework.classList.add('firework');
             // Randomize position within the container
             firework.style.top = `${Math.random() * 100}%`;
@@ -330,11 +330,11 @@
         function addFireworks(container) {
             for (let i = 0; i < 15; i++) {
                 const firework = document.createElement('div');
-                fireworkDot(firework);
-                fireworkDot(firework);
-                fireworkDot(firework);
-                fireworkDot(firework);
-                fireworkDot(firework);
+                fireworkDot(firework, i);
+                fireworkDot(firework, i);
+                fireworkDot(firework, i);
+                fireworkDot(firework, i);
+                fireworkDot(firework, i);
                 container.appendChild(firework);
 
                 // Remove firework after animation ends
