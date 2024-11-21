@@ -134,7 +134,7 @@
             {
                 word: 'ПАША',
                 syllables: ['ПА', 'ША'],
-                audioUrl: '/api/placeholder/10/10'
+                audioUrl: '/audio/ПАША.ogg'
             },
             {
                 word: 'ПАПА',
@@ -311,6 +311,8 @@
 
         function playAudio() {
             // In a real implementation, this would play the actual audio file
+            const audio = new Audio(words[currentWord].audioUrl);
+            audio.play();
             console.log('Playing audio for:', words[currentWord].word);
         }
 
