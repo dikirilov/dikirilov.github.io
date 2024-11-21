@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Учим слоги</title>
+    <title>Build Words with Syllables!</title>
     <style>
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -188,6 +188,10 @@
             }
         ];
 
+        const syllables = words
+              .reduce((allSyllables, word) => [...allSyllables, ...word.syllables], [])
+              .filter((syllable, index, array) => array.indexOf(syllable) === index);
+
         let currentWord = 0;
         let score = 0;
         let selectedSyllables = [];
@@ -210,9 +214,15 @@
             selectedSyllables = [];
             
             // Display target word (you might want to hide this in a real game)
-            targetWordDisplay.textContent = words[currentWord].word;
+            // targetWordDisplay.textContent = words[currentWord].word;
 
-            const shuffledSyllables = shuffleArray([...words[currentWord].syllables]);
+            const otherSyllables = syllables.filter(s => !words[currentWord].syllables.includes(s));
+            const randomCount = Math.floor(Math.random() * 3) + 3; // Random number between 3 and 5
+            const additionalSyllables = otherSyllables
+                .sort(() => Math.random() - 0.5)
+                .slice(0, Math.min(randomCount, otherSyllables.length));
+
+            const shuffledSyllables = shuffleArray([...words[currentWord].syllables, ...additionalSyllables]);
             
             shuffledSyllables.forEach(syllable => {
                 const card = document.createElement('div');
