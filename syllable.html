@@ -318,18 +318,23 @@
             displayWord();
         }
 
+        function fireworkDot(firework) {
+            firework.classList.add('firework');
+            // Randomize position within the container
+            firework.style.top = `${Math.random() * 100}%`;
+            firework.style.left = `${Math.random() * 100}%`;
+            // Staggered animations
+            firework.style.animationDelay = `${i * 0.2}s`;
+        }
+
         function addFireworks(container) {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 15; i++) {
                 const firework = document.createElement('div');
-                firework.classList.add('firework');
-
-                // Randomize position within the container
-                firework.style.top = `${Math.random() * 100}%`;
-                firework.style.left = `${Math.random() * 100}%`;
-
-                // Staggered animations
-                firework.style.animationDelay = `${i * 0.2}s`;
-
+                fireworkDot(firework);
+                fireworkDot(firework);
+                fireworkDot(firework);
+                fireworkDot(firework);
+                fireworkDot(firework);
                 container.appendChild(firework);
 
                 // Remove firework after animation ends
