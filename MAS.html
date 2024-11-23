@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MAS Module Dashboard</title>
+    <link href="https://cdn.prod.website-files.com/64f7954327d765ec8787586a/65e6c6412f9fd6ec94c96370_favicon.png" rel="shortcut icon" type="image/x-icon"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff5eb;
+        }
+        h1, h2 {
+            color: #8e0e72;
+            text-align: center;
+        }
+        .config-panel { 
+            padding: 10px; 
+            background-color: #f8f8f8; 
+            border: 1px solid #ddd; 
+            margin-bottom: 20px;
+        }
+        .config-item {
+            margin: 10px 0;
+        }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background-color: rgba(0,0,0,0.7); }
+        .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px;
+                        border: 1px solid #888; width: 80%; }
+        .close { float: right; cursor: pointer; }
+        button {
+            background-color: #ff6600;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        input[type="text"] { padding: 5px; width: 60%; }
+        input[type="password"] { padding: 5px; width: 60%; }
+        table tr:hover {
+            background-color: #ffd1a3;
+            transition: background-color 0.2s ease;
+        }
+
+        /* For better visual distinction between normal and hover states */
+        table tr {
+            background-color: white;
+        }
+
+        /* To maintain zebra striping (optional) */
+        table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        table tr:nth-child(even):hover {
+            background-color: #ffd1a3;
+        }
+
+        /* To ensure the header doesn't change on hover */
+        table th:hover {
+            background-color: #f2f2f2;
+        }
+        #notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .notification {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.5s ease-out forwards,
+                       fadeOut 0.5s ease-out 4.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .pagination-controls {
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pagination-info {
+            font-size: 14px;
+        }
+
+        .pagination-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pagination-buttons button {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .pagination-buttons button:hover {
+            background: #f5f5f5;
+        }
+
+        .pagination-buttons button:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+            color: #999;
+        }
+
+        #pageInfo {
+            margin: 0 10px;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        #pageSize {
+            padding: 3px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="config-panel">
+        <div class="config-item">
+            <label>Base URL:</label><br>
+            <input type="text" id="baseUrl" value="https://sit-sasviyadem.sunlifecorp.com/microanalyticScore/" size="60">
+        </div>
+        <div class="config-item">
+            <label>Bearer Token:</label><br>
+            <input type="password" id="bearerToken" placeholder="Enter your Bearer token" size="60">
+        </div>
+        <button onclick="loadModules()">Refresh</button>
+        <button onclick="saveConfig()">Save Configuration</button>
+    </div>
+
+    <div class="pagination-controls">
+        <div class="pagination-info">
+            <span>Total modules: <span id="totalModules">0</span></span>
+            <span style="margin-left: 20px;">
+                Page size: 
+                <select id="pageSize" onchange="changePageSize()">
+                    <option value="10">10</option>
+                    <option value="20" selected>20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </span>
+        </div>
+        <div class="pagination-buttons">
+            <button onclick="goToFirstPage()" id="firstPageBtn">⟨⟨</button>
+            <button onclick="goToPreviousPage()" id="prevPageBtn">⟨</button>
+            <span id="pageInfo">Page 1 of 1</span>
+            <button onclick="goToNextPage()" id="nextPageBtn">⟩</button>
+            <button onclick="goToLastPage()" id="lastPageBtn">⟩⟩</button>
+        </div>
+    </div>
+    <div id="modulesTable"></div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+    <div id="notification-container"></div>
+
+    <script>
+        let editor;
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modalContent');
+        const span = document.getElementsByClassName("close")[0];
+
+        let currentPage = 1;
+        let pageSize = 20;
+        let totalModules = 0;
+
+        // Load saved configuration on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadConfig();
+            document.getElementById('pageSize').value = pageSize;
+        });
+
+        span.onclick = () => modal.style.display = "none";
+        window.onclick = (event) => {
+            if (event.target == modal) modal.style.display = "none";
+        }
+
+        function getHeaders() {
+            const token = document.getElementById('bearerToken').value;
+            return {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            };
+        }
+
+        function saveConfig() {
+            const config = {
+                baseUrl: document.getElementById('baseUrl').value,
+                bearerToken: document.getElementById('bearerToken').value
+            };
+            localStorage.setItem('masConfig', JSON.stringify(config));
+            alert('Configuration saved!');
+        }
+
+        function loadConfig() {
+            const savedConfig = localStorage.getItem('masConfig');
+            if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+                document.getElementById('baseUrl').value = config.baseUrl || '';
+                document.getElementById('bearerToken').value = config.bearerToken || '';
+            }
+            loadModules();
+        }
+
+        // Add these pagination control functions
+        function updatePaginationControls() {
+            const totalPages = Math.ceil(totalModules / pageSize);
+            document.getElementById('totalModules').textContent = totalModules;
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+            
+            // Update button states
+            document.getElementById('firstPageBtn').disabled = currentPage === 1;
+            document.getElementById('prevPageBtn').disabled = currentPage === 1;
+            document.getElementById('nextPageBtn').disabled = currentPage === totalPages;
+            document.getElementById('lastPageBtn').disabled = currentPage === totalPages;
+        }
+
+        function changePageSize() {
+            pageSize = parseInt(document.getElementById('pageSize').value);
+            currentPage = 1; // Reset to first page when changing page size
+            loadModules();
+        }
+
+        function goToFirstPage() {
+            if (currentPage !== 1) {
+                currentPage = 1;
+                loadModules();
+            }
+        }
+
+        function goToPreviousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadModules();
+            }
+        }
+
+        function goToNextPage() {
+            const totalPages = Math.ceil(totalModules / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadModules();
+            }
+        }
+
+        function goToLastPage() {
+            const totalPages = Math.ceil(totalModules / pageSize);
+            if (currentPage !== totalPages) {
+                currentPage = totalPages;
+                loadModules();
+            }
+        }
+
+
+        async function loadModules() {
+            const baseUrl = document.getElementById('baseUrl').value;
+            const start = (currentPage - 1) * pageSize;
+            
+            try {
+                const response = await fetch(`${baseUrl}/microanalyticScore/modules?start=${start}&limit=${pageSize}`, {
+                    headers: getHeaders()
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                totalModules = data.count;
+                displayModules(data.items);
+                updatePaginationControls();
+            } catch (error) {
+                console.error('Error loading modules:', error);
+                showNotification(`Error loading modules: ${error.message}`, 'error');
+            }
+        }
+
+        function displayModules(modules) {
+            const table = document.createElement('table');
+            const headers = [
+                'ID', 
+                'Version', 
+                'Created By', 
+                'Creation Timestamp', 
+                'Modified By', 
+                'Modified Timestamp',
+                'Actions'
+            ];
+            
+            const headerRow = table.insertRow();
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+
+            modules.forEach(module => {
+                const row = table.insertRow();
+                row.insertCell().textContent = module.id;
+                row.insertCell().textContent = module.version;
+                row.insertCell().textContent = module.createdBy;
+                row.insertCell().textContent = module.creationTimeStamp;
+                row.insertCell().textContent = module.modifiedBy;
+                row.insertCell().textContent = module.modifiedTimeStamp;
+
+                const actionsCell = row.insertCell();
+                module.links.forEach(link => {
+                    if (['delete', 'steps', 'submodules', 'source'].includes(link.rel)) {
+                        const button = document.createElement('button');
+                        button.textContent = link.rel;
+                        button.onclick = () => handleAction(link);
+                        actionsCell.appendChild(button);
+                    }
+                });
+            });
+
+            document.getElementById('modulesTable').innerHTML = '';
+            document.getElementById('modulesTable').appendChild(table);
+        }
+
+        // Modify the handleAction function to use the new displaySteps function
+        async function handleAction(link) {
+            const baseUrl = document.getElementById('baseUrl').value;
+            
+            if (link.rel === 'delete') {
+                if (!confirm('Are you sure you want to delete this module?')) return;
+                try {
+                    const response = await fetch(`${baseUrl}${link.uri}`, { 
+                        method: 'DELETE',
+                        headers: getHeaders()
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    showNotification('Module successfully deleted');
+                    loadModules();
+                } catch (error) {
+                    console.error('Error deleting module:', error);
+                    // alert(`Error deleting module: ${error.message}`);
+                    showNotification('Error deleting module: ' + error.message, 'error');
+                }
+                return;
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}${link.uri}`, {
+                    headers: getHeaders()
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                modalContent.innerHTML = '';
+                if (link.rel === 'source') {
+                    // Create header
+                    const header = document.createElement('h2');
+                    header.textContent = 'Source Code';
+                    modalContent.appendChild(header);
+
+                    // Create container for CodeMirror
+                    const editorContainer = document.createElement('div');
+                    editorContainer.style.height = '70vh'; // Set height for scrolling
+                    modalContent.appendChild(editorContainer);
+
+                    // Create textarea and initialize CodeMirror
+                    const textarea = document.createElement('textarea');
+                    editorContainer.appendChild(textarea);
+                    
+                    editor = CodeMirror.fromTextArea(textarea, {
+                        mode: 'sas',
+                        theme: 'default',
+                        lineNumbers: true,
+                        readOnly: true,
+                        viewportMargin: Infinity,
+                        lineWrapping: true,
+                        foldGutter: true,
+                        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                        extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+                        foldGutter: true
+                    });
+
+                    // Set the source code content
+                    if (data && data.source) {
+                        editor.setValue(data.source);
+                    } else {
+                        editor.setValue('// No source code available');
+                    }
+
+                    // Force refresh to ensure proper rendering
+                    setTimeout(() => {
+                        editor.refresh();
+                    }, 10);
+
+                    // Add some styling
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .CodeMirror {
+                            height: 100%;
+                            border: 1px solid #ddd;
+                            font-family: monospace;
+                            font-size: 14px;
+                        }
+                        .modal-content {
+                            width: 90%;
+                            height: 90%;
+                            margin: 2% auto;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                } else if (link.rel === 'steps') {
+                    displaySteps(data);
+                } else if (link.rel === 'submodules') {
+                    displaySubmodules(data);
+                } else {
+                    modalContent.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                }
+                
+                modal.style.display = "block";
+            } catch (error) {
+                console.error(`Error fetching ${link.rel}:`, error);
+                // alert(`Error fetching ${link.rel}: ${error.message}`);
+                showNotification('Error fetching ' +link.rel+': '+error.message, 'error');
+            }
+        }
+
+        function displaySteps(data) {
+            const table = document.createElement('table');
+            table.className = 'steps-table';
+            const headers = [
+                'ID',
+                'Version',
+                'Created By',
+                'Creation Timestamp',
+                'Modified By',
+                'Modified Timestamp',
+                'Inputs ▼',
+                'Outputs ▼'
+            ];
+
+            // Add CSS for toggle functionality
+            const style = document.createElement('style');
+            style.textContent = `
+                .toggle-content { 
+                    display: none; 
+                    padding: 10px;
+                    background: #f9f9f9;
+                    border: 1px solid #ddd;
+                    margin-top: 5px;
+                }
+                .toggle-content.show { 
+                    display: block; 
+                }
+                .toggle-header {
+                    cursor: pointer;
+                    color: #0066cc;
+                }
+                .toggle-header:hover {
+                    text-decoration: underline;
+                }
+                .steps-table td {
+                    vertical-align: top;
+                }
+                .param-table {
+                    margin-top: 5px;
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+                .param-table th, .param-table td {
+                    border: 1px solid #ddd;
+                    padding: 4px;
+                    font-size: 0.9em;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Create header row
+            const headerRow = table.insertRow();
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+
+            // Create rows for each step
+            data.items.forEach(step => {
+                const row = table.insertRow();
+                
+                // Basic columns
+                row.insertCell().textContent = step.id;
+                row.insertCell().textContent = step.version;
+                row.insertCell().textContent = step.createdBy;
+                row.insertCell().textContent = step.creationTimeStamp;
+                row.insertCell().textContent = step.modifiedBy;
+                row.insertCell().textContent = step.modifiedTimeStamp;
+
+                // Inputs column
+                const inputsCell = row.insertCell();
+                if (step.inputs && step.inputs.length > 0) {
+                    const toggleDiv = createToggleableContent(
+                        `${step.inputs.length} input(s)`,
+                        createParamsTable(step.inputs)
+                    );
+                    inputsCell.appendChild(toggleDiv);
+                } else {
+                    inputsCell.textContent = 'No inputs';
+                }
+
+                // Outputs column
+                const outputsCell = row.insertCell();
+                if (step.outputs && step.outputs.length > 0) {
+                    const toggleDiv = createToggleableContent(
+                        `${step.outputs.length} output(s)`,
+                        createParamsTable(step.outputs)
+                    );
+                    outputsCell.appendChild(toggleDiv);
+                } else {
+                    outputsCell.textContent = 'No outputs';
+                }
+            });
+
+            modalContent.innerHTML = '<h2>Step Details</h2>';
+            modalContent.appendChild(table);
+        }
+
+        function createToggleableContent(headerText, content) {
+            const container = document.createElement('div');
+            
+            const header = document.createElement('div');
+            header.className = 'toggle-header';
+            header.textContent = headerText;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'toggle-content';
+            contentDiv.appendChild(content);
+
+            header.onclick = () => {
+                contentDiv.classList.toggle('show');
+                header.textContent = headerText + (contentDiv.classList.contains('show') ? ' ▼' : ' ▶');
+            };
+
+            container.appendChild(header);
+            container.appendChild(contentDiv);
+            return container;
+        }
+
+        function createParamsTable(params) {
+            const table = document.createElement('table');
+            table.className = 'param-table';
+            
+            // Create header
+            const headerRow = table.insertRow();
+            ['Name', 'Type', 'Dimension', 'Size'].forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+
+            // Create rows for each parameter
+            params.forEach(param => {
+                const row = table.insertRow();
+                row.insertCell().textContent = param.name;
+                row.insertCell().textContent = param.type;
+                row.insertCell().textContent = param.dim;
+                row.insertCell().textContent = param.size;
+            });
+
+            return table;
+        }
+
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            // Set background color based on type
+            if (type === 'success') {
+                notification.style.backgroundColor = '#4CAF50';
+            } else if (type === 'error') {
+                notification.style.backgroundColor = '#f44336';
+            }
+
+            notification.textContent = message;
+            container.appendChild(notification);
+
+            // Remove notification after animation completes
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        function displaySubmodules(data) {
+            const table = document.createElement('table');
+            table.className = 'submodules-table';
+            const headers = [
+                'ID',
+                'Created By',
+                'Creation Timestamp',
+                'Modified By',
+                'Modified Timestamp'
+            ];
+
+            // Add CSS for submodules table
+            const style = document.createElement('style');
+            style.textContent = `
+                .submodules-table {
+                    width: 100%;
+                    margin-top: 10px;
+                    border-collapse: collapse;
+                }
+                .submodules-table th, .submodules-table td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                }
+                .submodules-table th {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }
+                .submodules-table tr {
+                    background-color: white;
+                }
+                .submodules-table tr:hover {
+                    background-color: #f5f5f5;
+                    transition: background-color 0.2s ease;
+                }
+                .submodules-table tr:nth-child(even) {
+                    background-color: #fafafa;
+                }
+                .submodules-table tr:nth-child(even):hover {
+                    background-color: #f5f5f5;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Create header row
+            const headerRow = table.insertRow();
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+
+            // Create rows for each submodule
+            if (data.items && Array.isArray(data.items)) {
+                data.items.forEach(submodule => {
+                    const row = table.insertRow();
+                    
+                    // Add cells with data
+                    row.insertCell().textContent = submodule.id;
+                    row.insertCell().textContent = submodule.createdBy;
+                    row.insertCell().textContent = submodule.creationTimeStamp;
+                    row.insertCell().textContent = submodule.modifiedBy;
+                    row.insertCell().textContent = submodule.modifiedTimeStamp;
+                });
+            }
+
+            // Create container with header
+            modalContent.innerHTML = '<h2>Submodules</h2>';
+            
+            // Add count information
+            const countInfo = document.createElement('div');
+            countInfo.style.margin = '10px 0';
+            countInfo.textContent = `Total submodules: ${data.count || 0}`;
+            modalContent.appendChild(countInfo);
+            
+            // Add table
+            modalContent.appendChild(table);
+        }
+    </script>
+</body>
+</html>
