@@ -9,12 +9,12 @@ function confetti() {
       PI2 = PI * 2,
       confetti = [];
 
-  var particles = 50,  // Increase for more confetti
+  var particles = 500,  // Increased number of confetti
       sizeMin = 3,
       sizeMax = 12 - sizeMin,
       deviation = 100,
-      dyMin = 0.3,
-      dyMax = 0.6,
+      dyMin = -0.3,  // Negative values to make confetti go upward
+      dyMax = -0.6,
       dThetaMin = 0.4,
       dThetaMax = 0.7 - dThetaMin;
 
@@ -75,7 +75,7 @@ function confetti() {
     this.update = function (height, delta) {
       this.frame += delta;
       this.x += this.dx * delta * 0.2;
-      this.y -= this.dy * delta;
+      this.y += this.dy * delta; // Move upward
       this.theta += this.dTheta * delta;
 
       outerStyle.left = this.x + 'px';
