@@ -253,7 +253,7 @@
                 wordDisplay.classList.add('celebration');
                 // addFireworks(document.body);
                 confetti();
-                const audio = new Audio(shuffleArray(cheers_audio)[0].audioUrl);
+                const audio = new Audio(shuffleArray(cheers_audio)[0]);
                 audio.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
