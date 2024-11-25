@@ -154,6 +154,7 @@
         let currentWord = 0;
         let score = 0;
         let selectedSyllables = [];
+        const again_audio = '/audio/again.ogg';
         const cheers_audio = ['/audio/cheers-1.ogg', '/audio/cheers-2.ogg'];
 
         // Load words from JSON file
@@ -263,6 +264,10 @@
             } else {
                 feedback.textContent = '💫 Попробуй еще раз! 💫';
                 setTimeout(() => {
+                    const audio = new Audio(again_audio);
+                    audio.play().catch(error => {
+                        console.error('Error playing audio:', error);
+                    });
                     selectedSyllables = [];
                     updateWordDisplay();
                     document.querySelectorAll('.card').forEach(card => card.classList.remove('used'));
