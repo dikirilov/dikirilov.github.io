@@ -13,8 +13,10 @@ function confetti() {
       sizeMin = 3,
       sizeMax = 12 - sizeMin,
       deviation = 100,
-      dyMin = -0.3,  // Negative values to make confetti go upward
-      dyMax = -0.6,
+      dyMin = 0.1,  // Positive values for downward movement
+      dyMax = 0.5,
+      dxMin = -0.3, // Horizontal movement range
+      dxMax = 0.3,
       dThetaMin = 0.4,
       dThetaMax = 0.7 - dThetaMin;
 
@@ -67,15 +69,15 @@ function confetti() {
     // Start from either left or right
     this.x = random() < 0.5 ? -deviation : window.innerWidth + deviation;
     this.y = window.innerHeight * random();
-    this.dx = this.x < 0 ? 1 : -1; // Move inward
-    this.dy = dyMin + dyMax * random();
+    this.dx = dxMin + (dxMax - dxMin) * random(); // Randomized horizontal movement
+    this.dy = dyMin + (dyMax - dyMin) * random(); // Randomized vertical movement
     outerStyle.left = this.x + 'px';
     outerStyle.top = this.y + 'px';
 
     this.update = function (height, delta) {
       this.frame += delta;
-      this.x += this.dx * delta * 0.2;
-      this.y += this.dy * delta; // Move upward
+      this.x += this.dx * delta; // Horizontal movement
+      this.y += this.dy * delta; // Downward movement
       this.theta += this.dTheta * delta;
 
       outerStyle.left = this.x + 'px';
@@ -83,7 +85,7 @@ function confetti() {
       innerStyle.transform = this.axis + this.theta + 'deg)';
 
       // Remove confetto if it moves out of view
-      return this.y < -deviation || this.x < -deviation || this.x > window.innerWidth + deviation;
+      return this.y > height + deviation || this.x < -deviation || this.x > window.innerWidth + deviation;
     };
   }
 
