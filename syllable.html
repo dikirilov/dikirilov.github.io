@@ -154,6 +154,7 @@
         let currentWord = 0;
         let score = 0;
         let selectedSyllables = [];
+        const cheers_audio = ['/audio/cheers-1.ogg', '/audio/cheers-2.ogg'];
 
         // Load words from JSON file
         async function loadWords() {
@@ -252,6 +253,7 @@
                 wordDisplay.classList.add('celebration');
                 // addFireworks(document.body);
                 confetti();
+                const audio = new Audio(shuffleArray(cheers_audio)[0].audioUrl);
                 score++;
                 // document.getElementById('score').textContent = score;
                 document.getElementById('nextButton').style.display = 'block';
