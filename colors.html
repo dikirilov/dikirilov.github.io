@@ -74,6 +74,7 @@
             border-radius: 10px;
             cursor: pointer;
             transition: transform 0.2s;
+            border: 1px solid #ddd;
         }
 
         .card:active {
@@ -152,7 +153,10 @@
             selectRandomColor();
 
             const otherColors = colors.filter(s => s.value != currentColor.value);
-            const shuffledColors = shuffleArray([...otherColors, currentColor]);
+            const additionalColors = otherColors
+                .sort(() => Math.random() - 0.5)
+                .slice(0, Math.min(randomCount, otherColors.length));
+            const shuffledColors = shuffleArray([...additionalColors, currentColor]);
 
             const colorCards = document.getElementById('colorCards');
             colorCards.innerHTML = '';
@@ -179,7 +183,10 @@
                 });
                 selectRandomColor();
             } else {
-                alert('Try again!');
+                const audio = new Audio(again_audio);
+                audio.play().catch(error => {
+                    console.error('Error playing audio:', error);
+                });
             }
         }
 
