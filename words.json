@@ -3,72 +3,72 @@
     {
       "word": "ПАША",
       "syllables": ["ПА", "ША"],
-      "audioUrl": "/audio/ПАША.ogg"
+      "audioUrl": "/audio/ПАША.m4a"
     },
     {
       "word": "ПАПА",
       "syllables": ["ПА", "ПА"],
-      "audioUrl": "/audio/ПАПА.ogg"
+      "audioUrl": "/audio/ПАПА.m4a"
     },
     {
       "word": "МАМА",
       "syllables": ["МА", "МА"],
-      "audioUrl": "/audio/МАМА.ogg"
+      "audioUrl": "/audio/МАМА.m4a"
     },
     {
       "word": "САША",
       "syllables": ["СА", "ША"],
-      "audioUrl": "/audio/САША.ogg"
+      "audioUrl": "/audio/САША.m4a"
     },
     {
       "word": "КАША",
       "syllables": ["КА", "ША"],
-      "audioUrl": "/audio/КАША.ogg"
+      "audioUrl": "/audio/КАША.m4a"
     },
     {
       "word": "МАША",
       "syllables": ["МА", "ША"],
-      "audioUrl": "/audio/МАША.ogg"
+      "audioUrl": "/audio/МАША.m4a"
     },
     {
       "word": "ДАША",
       "syllables": ["ДА", "ША"],
-      "audioUrl": "/audio/ДАША.ogg"
+      "audioUrl": "/audio/ДАША.m4a"
     },
     {
       "word": "НАТАША",
       "syllables": ["НА", "ТА", "ША"],
-      "audioUrl": "/audio/НАТАША.ogg"
+      "audioUrl": "/audio/НАТАША.m4a"
     },
     {
       "word": "ДИМА",
       "syllables": ["ДИ", "МА"],
-      "audioUrl": "/audio/ДИМА.ogg"
+      "audioUrl": "/audio/ДИМА.m4a"
     },
     {
       "word": "БАБА",
       "syllables": ["БА", "БА"],
-      "audioUrl": "/audio/БАБА.ogg"
+      "audioUrl": "/audio/БАБА.m4a"
     },
     {
       "word": "ДЕДА",
       "syllables": ["ДЕ", "ДА"],
-      "audioUrl": "/audio/ДЕДА.ogg"
+      "audioUrl": "/audio/ДЕДА.m4a"
     },
     {
       "word": "ТАНЯ",
       "syllables": ["ТА", "НЯ"],
-      "audioUrl": "/audio/ТАНЯ.ogg"
+      "audioUrl": "/audio/ТАНЯ.m4a"
     },
     {
       "word": "ВАНЯ",
       "syllables": ["ВА", "НЯ"],
-      "audioUrl": "/audio/ВАНЯ.ogg"
+      "audioUrl": "/audio/ВАНЯ.m4a"
     },
     {
       "word": "СВЕТА",
       "syllables": ["СВЕ", "ТА"],
-      "audioUrl": "/audio/СВЕТА.ogg"
+      "audioUrl": "/audio/СВЕТА.m4a"
     }
   ]
 }
