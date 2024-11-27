@@ -151,7 +151,7 @@
         function displayColors() {
             selectRandomColor();
 
-            const otherColors = colors.filter(s => !currentColor);
+            const otherColors = colors.filter(s => s.value != currentColor.value);
             const shuffledColors = shuffleArray([...otherColors, currentColor]);
 
             const colorCards = document.getElementById('colorCards');
