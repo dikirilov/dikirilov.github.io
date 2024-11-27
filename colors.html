@@ -106,10 +106,13 @@
         <div class="feedback" id="feedback"></div>
     </div>
 
+    <script src="confetti.js"></script>
+
     <script>
         let colors = [];
         let currentColor = null;
         let currentLanguage = 'ru';
+        const cheers_audio = ['/audio/cheers-1.m4a', '/audio/cheers-2.m4a'];
 
         function setLanguage(lang) {
             currentLanguage = lang;
@@ -169,7 +172,11 @@
 
         function selectColor(color) {
             if (color === currentColor) {
-                alert('Correct!');
+                confetti();
+                const audio = new Audio(shuffleArray(cheers_audio)[0]);
+                audio.play().catch(error => {
+                    console.error('Error playing audio:', error);
+                });
                 selectRandomColor();
             } else {
                 alert('Try again!');
