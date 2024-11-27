@@ -153,6 +153,7 @@
             selectRandomColor();
 
             const otherColors = colors.filter(s => s.value != currentColor.value);
+            const randomCount = Math.floor(Math.random() * 3) + 3;
             const additionalColors = otherColors
                 .sort(() => Math.random() - 0.5)
                 .slice(0, Math.min(randomCount, otherColors.length));
