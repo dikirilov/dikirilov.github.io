@@ -149,7 +149,7 @@
             selectRandomColor();
 
             const otherColors = colors.filter(s => !currentColor);
-            const shuffledColors = shuffleArray([...otherColors, ...currentColor]);
+            const shuffledColors = shuffleArray([...otherColors, currentColor]);
 
             const colorCards = document.getElementById('colorCards');
             colorCards.innerHTML = '';
