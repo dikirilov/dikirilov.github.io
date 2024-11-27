@@ -3,72 +3,72 @@
     {
       "word": "ПАША",
       "syllables": ["ПА", "ША"],
-      "audioUrl": "/audio/ПАША.m4a"
+      "audioUrl": "/audio/syllables/ПАША.m4a"
     },
     {
       "word": "ПАПА",
       "syllables": ["ПА", "ПА"],
-      "audioUrl": "/audio/ПАПА.m4a"
+      "audioUrl": "/audio/syllables/ПАПА.m4a"
     },
     {
       "word": "МАМА",
       "syllables": ["МА", "МА"],
-      "audioUrl": "/audio/МАМА.m4a"
+      "audioUrl": "/audio/syllables/МАМА.m4a"
     },
     {
       "word": "САША",
       "syllables": ["СА", "ША"],
-      "audioUrl": "/audio/САША.m4a"
+      "audioUrl": "/audio/syllables/САША.m4a"
     },
     {
       "word": "КАША",
       "syllables": ["КА", "ША"],
-      "audioUrl": "/audio/КАША.m4a"
+      "audioUrl": "/audio/syllables/КАША.m4a"
     },
     {
       "word": "МАША",
       "syllables": ["МА", "ША"],
-      "audioUrl": "/audio/МАША.m4a"
+      "audioUrl": "/audio/syllables/МАША.m4a"
     },
     {
       "word": "ДАША",
       "syllables": ["ДА", "ША"],
-      "audioUrl": "/audio/ДАША.m4a"
+      "audioUrl": "/audio/syllables/ДАША.m4a"
     },
     {
       "word": "НАТАША",
       "syllables": ["НА", "ТА", "ША"],
-      "audioUrl": "/audio/НАТАША.m4a"
+      "audioUrl": "/audio/syllables/НАТАША.m4a"
     },
     {
       "word": "ДИМА",
       "syllables": ["ДИ", "МА"],
-      "audioUrl": "/audio/ДИМА.m4a"
+      "audioUrl": "/audio/syllables/ДИМА.m4a"
     },
     {
       "word": "БАБА",
       "syllables": ["БА", "БА"],
-      "audioUrl": "/audio/БАБА.m4a"
+      "audioUrl": "/audio/syllables/БАБА.m4a"
     },
     {
       "word": "ДЕДА",
       "syllables": ["ДЕ", "ДА"],
-      "audioUrl": "/audio/ДЕДА.m4a"
+      "audioUrl": "/audio/syllables/ДЕДА.m4a"
     },
     {
       "word": "ТАНЯ",
       "syllables": ["ТА", "НЯ"],
-      "audioUrl": "/audio/ТАНЯ.m4a"
+      "audioUrl": "/audio/syllables/ТАНЯ.m4a"
     },
     {
       "word": "ВАНЯ",
       "syllables": ["ВА", "НЯ"],
-      "audioUrl": "/audio/ВАНЯ.m4a"
+      "audioUrl": "/audio/syllables/ВАНЯ.m4a"
     },
     {
       "word": "СВЕТА",
       "syllables": ["СВЕ", "ТА"],
-      "audioUrl": "/audio/СВЕТА.m4a"
+      "audioUrl": "/audio/syllables/СВЕТА.m4a"
     }
   ]
 }

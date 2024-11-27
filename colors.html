@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Учим цвета!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0f9ff;
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 10px;
+        }
+
+        h1 {
+            font-size: clamp(24px, 5vw, 32px);
+            margin: 10px 0;
+        }
+
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .flag {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .flag.active {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .play-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: clamp(18px, 4vw, 24px);
+            cursor: pointer;
+            margin: 15px;
+            transition: transform 0.2s;
+            touch-action: manipulation;
+        }
+
+        .play-button:active {
+            transform: scale(0.95);
+        }
+
+        .color-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .card {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.95);
+        }
+
+        @media (hover: hover) {
+            .card:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        .feedback {
+            font-size: clamp(18px, 4vw, 24px);
+            margin: 15px;
+            min-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Учим цвета 🎨</h1>
+        <div class="language-selector">
+            <img src="https://cdn.countryflags.com/thumbs/russia/flag-800.png" height="24px" alt="Russian" class="flag active" data-lang="ru" onclick="setLanguage('ru')">
+            <img src="https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png" height="24px" alt="English" class="flag" data-lang="en" onclick="setLanguage('en')">
+            <img src="https://cdn.countryflags.com/thumbs/germany/flag-800.png" height="24px" alt="German" class="flag" data-lang="de" onclick="setLanguage('de')">
+        </div>
+        <button class="play-button" onclick="playAudio()">▶️</button>
+        <div class="color-cards" id="colorCards"></div>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <script>
+        let colors = [];
+        let currentColor = null;
+        let currentLanguage = 'ru';
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.querySelectorAll('.flag').forEach(flag => flag.classList.remove('active'));
+            document.querySelector(`.flag[data-lang="${lang}"]`).classList.add('active');
+        }
+
+        function playAudio() {
+            if (currentColor) {
+                const audioUrl = currentColor.audioUrls[currentLanguage];
+                const audio = new Audio(audioUrl);
+                audio.play().catch(console.error);
+            }
+        }
+
+        async function loadColors() {
+            try {
+                const response = await fetch('colors.json?v=' + new Date().getTime());
+                const data = await response.json();
+                colors = shuffleArray(data.colors);
+                displayColors();
+            } catch (error) {
+                console.error('Error loading colors:', error);
+                document.getElementById('feedback').textContent = 'Ошибка загрузки данных';
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function displayColors() {
+            selectRandomColor();
+
+            const otherColors = colors.filter(s => !currentColor);
+            const shuffledColors = shuffleArray([...otherColors, ...currentColor]);
+
+            const colorCards = document.getElementById('colorCards');
+            colorCards.innerHTML = '';
+            shuffledColors.forEach(color => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.backgroundColor = color.value;
+                card.onclick = () => selectColor(color);
+                colorCards.appendChild(card);
+            });
+        }
+
+        function selectRandomColor() {
+            currentColor = colors[Math.floor(Math.random() * colors.length)];
+            // playAudio();
+        }
+
+        function selectColor(color) {
+            if (color === currentColor) {
+                alert('Correct!');
+                selectRandomColor();
+            } else {
+                alert('Try again!');
+            }
+        }
+
+        loadColors();
+    </script>
+</body>
+</html>

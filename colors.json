@@ -1,0 +1,54 @@
+{
+  "colors": [
+    {
+      "name": {"en": "red", "ru": "красный", "de": "rot"},
+      "value": "red",
+      "audioUrls": {"en": "/audio/colors/en-red.m4a", "ru": "/audio/colors/ru-red.m4a", "de": "/audio/colors/de-red.m4a"}
+    },
+    {
+      "name": {"en": "blue", "ru": "синий", "de": "blau"},
+      "value": "blue",
+      "audioUrls": {"en": "/audio/colors/en-blue.m4a", "ru": "/audio/colors/ru-blue.m4a", "de": "/audio/colors/de-blue.m4a"}
+    },
+    {
+      "name": {"en": "green", "ru": "зелёный", "de": "grün"},
+      "value": "green",
+      "audioUrls": {"en": "/audio/colors/en-green.m4a", "ru": "/audio/colors/ru-green.m4a", "de": "/audio/colors/de-green.m4a"}
+    },
+    {
+      "name": {"en": "yellow", "ru": "жёлтый", "de": "gelb"},
+      "value": "yellow",
+      "audioUrls": {"en": "/audio/colors/en-yellow.m4a", "ru": "/audio/colors/ru-yellow.m4a", "de": "/audio/colors/de-yellow.m4a"}
+    },
+    {
+      "name": {"en": "white", "ru": "белый", "de": "weiß"},
+      "value": "white",
+      "audioUrls": {"en": "/audio/colors/en-white.m4a", "ru": "/audio/colors/ru-white.m4a", "de": "/audio/colors/de-white.m4a"}
+    },
+    {
+      "name": {"en": "black", "ru": "чёрный", "de": "schwarz"},
+      "value": "black",
+      "audioUrls": {"en": "/audio/colors/en-black.m4a", "ru": "/audio/colors/ru-black.m4a", "de": "/audio/colors/de-black.m4a"}
+    },
+    {
+      "name": {"en": "orange", "ru": "оранжевый", "de": "orange"},
+      "value": "orange",
+      "audioUrls": {"en": "/audio/colors/en-orange.m4a", "ru": "/audio/colors/ru-orange.m4a", "de": "/audio/colors/de-orange.m4a"}
+    },
+    {
+      "name": {"en": "purple", "ru": "фиолетовый", "de": "lila"},
+      "value": "purple",
+      "audioUrls": {"en": "/audio/colors/en-purple.m4a", "ru": "/audio/colors/ru-purple.m4a", "de": "/audio/colors/de-purple.m4a"}
+    },
+    {
+      "name": {"en": "pink", "ru": "розовый", "de": "rosa"},
+      "value": "pink",
+      "audioUrls": {"en": "/audio/colors/en-pink.m4a", "ru": "/audio/colors/ru-pink.m4a", "de": "/audio/colors/de-pink.m4a"}
+    },
+    {
+      "name": {"en": "grey", "ru": "серый", "de": "grau"},
+      "value": "grey",
+      "audioUrls": {"en": "/audio/colors/en-grey.m4a", "ru": "/audio/colors/ru-grey.m4a", "de": "/audio/colors/de-grey.m4a"}
+    }
+  ]
+}
