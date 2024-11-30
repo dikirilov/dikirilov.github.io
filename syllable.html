@@ -33,7 +33,7 @@
 
         // Load words from JSON file
         async function loadContent() {
-            words = shuffleArray(await fetchArrayFromJson('https://dikirilov.github.io/words.json'), 'words');
+            words = shuffleArray(await fetchArrayFromJson('words.json', 'words'));
             // Extract unique syllables
             syllables = words
                 .reduce((allSyllables, word) => [...allSyllables, ...word.syllables], [])
