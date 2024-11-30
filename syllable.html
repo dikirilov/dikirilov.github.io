@@ -188,7 +188,7 @@
             const nextSyllable = words[currentWord].syllables[approvedSyllables.length];
             document.querySelectorAll('.card').forEach(card => {
                 if (card.textContent === nextSyllable) {
-                    if (!card.hasClass('used')) {
+                    if (!card.classList.contains('used')) {
                         card.classList.remove('glow');
                         card.classList.add('glow');
                     }
