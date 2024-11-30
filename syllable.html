@@ -184,9 +184,7 @@
         }
 
         function showTip() {
-            //selectedSyllables.length is actually 1 more because it is the current one that is considered
-            //and not yet deleted from the WordDisplay, so -1 is aplied here
-            const nextSyllable = words[currentWord].syllables[selectedSyllables.length-1];
+            const nextSyllable = words[currentWord].syllables[approvedSyllables.length];
             document.querySelectorAll('.card').forEach(card => {
                 if (card.textContent === nextSyllable) {
                     card.classList.remove('glow');
