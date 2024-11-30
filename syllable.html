@@ -120,8 +120,10 @@
         function selectSyllable(syllable, card) {
             if (card.classList.contains('used')) return;
 
-            cheerAudio.src = shuffleArray(cheers_audio)[0];
-            againAudio.src = shuffleArray(again_audio)[0];
+            const cheerAudioSrc = shuffleArray(cheers_audio)[0];
+            const againAudioSrc = shuffleArray(again_audio)[0];
+            cheerAudio.src = cheerAudioSrc;
+            againAudio.src = againAudioSrc;
 
             const currentWordObj = words[currentWord];
             const correctSyllables = currentWordObj.syllables;
