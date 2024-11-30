@@ -180,7 +180,7 @@
         function showTip() {
             const correctSyllables = words[currentWord].syllables;
             document.querySelectorAll('.card').forEach(card => {
-                if (card.textContent == correctSyllables[0]) {
+                if (card.textContent == correctSyllables[selectedSyllables.length]) {
                     card.classList.remove('glow');
                     card.classList.add('glow');
                 }
