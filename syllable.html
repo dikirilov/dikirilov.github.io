@@ -147,7 +147,7 @@
                 });
                 feedback.textContent = '🎉 Отлично! 🌟';
                 // wordDisplay.classList.add('celebration');
-                document.querySelectorAll('.selected-syllable').forEach(card => card.add('celebration'));
+                document.querySelectorAll('.selected-syllable').forEach(card => card.classList.add('celebration'));
                 confetti();
                 score++;
                 setTimeout(() => {
@@ -179,9 +179,9 @@
         }
 
         function showTip() {
-            const len = selectedSyllables.length;
-            const correctSyllables = words[currentWord].syllables;
-            const nextSyllable = words[currentWord].syllables[selectedSyllables.length];
+            //selectedSyllables.length is actually 1 more because it is the current one that is considered
+            //and not yet deleted from the WordDisplay, so -1 is aplied here
+            const nextSyllable = words[currentWord].syllables[selectedSyllables.length-1];
             document.querySelectorAll('.card').forEach(card => {
                 if (card.textContent === nextSyllable) {
                     card.classList.remove('glow');
