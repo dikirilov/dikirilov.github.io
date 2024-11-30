@@ -139,27 +139,27 @@
             const wordDisplay = document.getElementById('wordDisplay');
             
             if (correct) {
-                feedback.textContent = '🎉 Отлично! 🌟';
-                wordDisplay.classList.add('celebration');
-                confetti();
                 const audio = new Audio(shuffleArray(cheers_audio)[0]);
                 audio.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
+                feedback.textContent = '🎉 Отлично! 🌟';
+                wordDisplay.classList.add('celebration');
+                confetti();
                 score++;
                 setTimeout(() => {
                     document.getElementById('nextButton').style.display = 'block';
                 }, 750);
             } else {
+                const audio = new Audio(shuffleArray(again_audio)[0]);
+                audio.play().catch(error => {
+                    console.error('Error playing audio:', error);
+                });
                 attempts++;
                 if (attempts > 5) {
                     showTip();
                 }
                 feedback.textContent = '💫 Попробуй еще раз! 💫';
-                const audio = new Audio(shuffleArray(again_audio)[0]);
-                audio.play().catch(error => {
-                    console.error('Error playing audio:', error);
-                });
                 setTimeout(() => {
                     lastSyllable = selectedSyllables[selectedSyllables.length-1]
                     document.querySelectorAll('.card').forEach(card => {
