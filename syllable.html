@@ -30,6 +30,8 @@
         const tips_audio = fetchArrayFromJson('/audio/tips.json', 'tips');
         const again_audio = fetchArrayFromJson('/audio/again.json', 'again');
         const cheers_audio = fetchArrayFromJson('/audio/cheers.json', 'cheers');
+        let cheerAudio = new Audio();
+        let againAudio = new Audio();
 
         // Load words from JSON file
         async function loadContent() {
@@ -116,6 +118,9 @@
         function selectSyllable(syllable, card) {
             if (card.classList.contains('used')) return;
 
+            cheerAudio.src = shuffleArray(cheers_audio)[0];
+            againAudio.src = shuffleArray(again_audio)[0];
+
             selectedSyllables.push(syllable);
             card.classList.add('used');
             updateWordDisplay();
@@ -141,8 +146,7 @@
             const wordDisplay = document.getElementById('wordDisplay');
             
             if (correct) {
-                const audio = new Audio(shuffleArray(cheers_audio)[0]);
-                audio.play().catch(error => {
+                cheerAudio.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
                 feedback.textContent = '🎉 Отлично! 🌟';
@@ -154,8 +158,7 @@
                     document.getElementById('nextButton').style.display = 'block';
                 }, 750);
             } else {
-                const audio = new Audio(shuffleArray(again_audio)[0]);
-                audio.play().catch(error => {
+                againAudio.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
                 attempts++;
