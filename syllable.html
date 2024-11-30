@@ -50,7 +50,7 @@
                 array = data[paramName];
                 return array;
             } catch (error) {
-                console.error('Error loading content (URL: :' + get_url + ', paramName: ' + paramName + '): ' error);
+                console.error('Error loading content (URL: :' + get_url + ', paramName: ' + paramName + '): ' + error);
                 document.getElementById('feedback').textContent = 'Ошибка загрузки данных';
             }
         }
