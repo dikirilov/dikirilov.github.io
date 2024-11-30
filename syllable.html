@@ -175,7 +175,7 @@
         }
 
         function showTip() {
-            const correctSyllables = currentWordObj.syllables;
+            const correctSyllables = words[currentWord].syllables;
             document.querySelectorAll('.card').forEach(card => {
                 if (card.textContent == correctSyllables[0]) {
                     card.classList.remove('glow');
