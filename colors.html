@@ -3,99 +3,8 @@
 <head>
     <title>Учим цвета!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
-    </style>
-    <style>
-        body {
-            font-family: "Roboto Mono", monospace;
-            background-color: #f0f9ff;
-            margin: 0;
-            padding: 10px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-            padding: 10px;
-        }
-
-        h1 {
-            font-size: clamp(24px, 5vw, 32px);
-            margin: 10px 0;
-        }
-
-        .language-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .flag {
-            cursor: pointer;
-            opacity: 0.6;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-
-        .flag.active {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .play-button {
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: clamp(18px, 4vw, 24px);
-            cursor: pointer;
-            margin: 15px;
-            transition: transform 0.2s;
-            touch-action: manipulation;
-        }
-
-        .play-button:active {
-            transform: scale(0.95);
-        }
-
-        .color-cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin: 15px 0;
-        }
-
-        .card {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            border: 1px solid #ddd;
-        }
-
-        .card:active {
-            transform: scale(0.95);
-        }
-
-        @media (hover: hover) {
-            .card:hover {
-                transform: scale(1.05);
-            }
-        }
-
-        .feedback {
-            font-size: clamp(18px, 4vw, 24px);
-            margin: 15px;
-            min-height: 30px;
-        }
-    </style>
+    <link rel="icon" type="image/png" sizes="180x180" href="/favicon.ico">
+    <link rel="stylesheet" href="common.css">
 </head>
 <body>
     <div class="container">
@@ -114,8 +23,9 @@
 
     <script>
         let colors = [];
-        const again_audio = '/audio/again.m4a';
-        const cheers_audio = ['/audio/cheers-1.m4a', '/audio/cheers-2.m4a'];
+        let options = [];
+        const again_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/again.json', 'again');
+        const cheers_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/cheers.json', 'cheers');
 
         let currentColor = null;
         let currentLanguage = 'ru';
@@ -134,16 +44,22 @@
             }
         }
 
-        async function loadColors() {
+        function fetchArrayFromJson(url, paramName) {
+            const get_url = url + '?v=' + new Date().getTime();
             try {
-                const response = await fetch('colors.json?v=' + new Date().getTime());
+                const response = await fetch(get_url);
                 const data = await response.json();
-                colors = shuffleArray(data.colors);
-                displayColors();
+                array = data[paramName];
+                return array;
             } catch (error) {
-                console.error('Error loading colors:', error);
+                console.error('Error loading content (URL: :', get_url, ', paramName: ', paramName, '): ' error);
                 document.getElementById('feedback').textContent = 'Ошибка загрузки данных';
             }
+        }
+
+        async function loadColors() {
+            colors = fetchArrayFromJson('colors.json', 'colors');
+            startRound();
         }
 
         function shuffleArray(array) {
@@ -154,7 +70,7 @@
             return array;
         }
 
-        function displayColors() {
+        function startRound() {
             selectRandomColor();
 
             const otherColors = colors.filter(s => s.value != currentColor.value);
@@ -162,8 +78,13 @@
             const additionalColors = otherColors
                 .sort(() => Math.random() - 0.5)
                 .slice(0, Math.min(randomCount, otherColors.length));
-            const shuffledColors = shuffleArray([...additionalColors, currentColor]);
+            options = shuffleArray([...additionalColors, currentColor]);
 
+            displayRoundStart();
+            playAudio();
+        }
+
+        function displayRoundStart() {
             const colorCards = document.getElementById('colorCards');
             colorCards.innerHTML = '';
             shuffledColors.forEach(color => {
@@ -177,7 +98,6 @@
 
         function selectRandomColor() {
             currentColor = colors[Math.floor(Math.random() * colors.length)];
-            // playAudio();
         }
 
         function selectColor(color) {
@@ -187,9 +107,9 @@
                 audio.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
-                displayColors();
+                startRound();
             } else {
-                const audio = new Audio(again_audio);
+                const audio = new Audio(shuffleArray(again_audio)[0]);
                 audio.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });

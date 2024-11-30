@@ -129,3 +129,10 @@ h1 {
 .celebration {
     animation: celebrate 0.5s ease-in-out;
 }
+
+.glow {
+    -webkit-animation: glow 1.0s infinite alternate;  
+    -webkit-transition: border 1.0s linear, box-shadow 1.0s linear;
+       -moz-transition: border 1.0s linear, box-shadow 1.0s linear;
+            transition: border 1.0s linear, box-shadow 1.0s linear;
+}

@@ -14,7 +14,7 @@
         <div class="word-display" id="wordDisplay"></div>
         <div class="syllable-cards" id="syllableCards"></div>
         <div class="feedback" id="feedback"></div>
-        <center><button class="next-button" id="nextButton" onclick="nextWord()">Дальше →</button></center>
+        <center><button class="next-button" id="nextButton" onclick="nextRound()">Дальше →</button></center>
     </div>
 
     <script src="confetti.js"></script>
@@ -25,13 +25,15 @@
         let syllables = [];
         let currentWord = 0;
         let score = 0;
+        let attempts = 0;
         let selectedSyllables = [];
-        const again_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/again.json', 'again');
-        const cheers_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/cheers.json', 'cheers');
+        const tip_audio = await fetchArrayFromJson('/audio/tips.json', 'tips');
+        const again_audio = await fetchArrayFromJson('/audio/again.json', 'again');
+        const cheers_audio = fawait fetchArrayFromJson('/audio/cheers.json', 'cheers');
 
         // Load words from JSON file
         async function loadContent() {
-            words = shuffleArray(fetchArrayFromJson('https://dikirilov.github.io/words.json'), 'words');
+            words = shuffleArray(await fetchArrayFromJson('https://dikirilov.github.io/words.json'), 'words');
             // Extract unique syllables
             syllables = words
                 .reduce((allSyllables, word) => [...allSyllables, ...word.syllables], [])
@@ -40,7 +42,7 @@
             startRound();
         }
 
-        function fetchArrayFromJson(url, paramName) {
+        async function fetchArrayFromJson(url, paramName) {
             const get_url = url + '?v=' + new Date().getTime();
             try {
                 const response = await fetch(get_url);
@@ -64,6 +66,7 @@
         function startRound() {
             selectedSyllables = [];
             options = [];
+            attempts = 0;
             
             const otherSyllables = syllables.filter(s => !words[currentWord].syllables.includes(s));
             const randomCount = Math.floor(Math.random() * 3) + 3;
@@ -128,6 +131,7 @@
             if (selectedSyllables.length === correctSyllables.length) {
                 showFeedback(true);
             }
+            document.querySelectorAll('.card').forEach(card => card.classList.remove('glow'));
         }
 
         function showFeedback(correct) {
@@ -149,18 +153,40 @@
                     document.getElementById('nextButton').style.display = 'block';
                 }, 750);
             } else {
+                if (attempts > 5) {
+                    showTip();
+                }
                 feedback.textContent = '💫 Попробуй еще раз! 💫';
+                attempts++;
                 const audio = new Audio(shuffleArray(again_audio)[0]);
                 audio.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
                 setTimeout(() => {
-                    selectedSyllables = [];
+                    lastSyllable = selectedSyllables[selectedSyllables.length-1]
+                    document.querySelectorAll('.card').forEach(card => {
+                        if (card.textContent == lastSyllable) {
+                            card.classList.remove('used');
+                        }
+                    });
+                    selectedSyllables.pop(lastSyllable);
                     updateWordDisplay();
-                    document.querySelectorAll('.card').forEach(card => card.classList.remove('used'));
                     feedback.textContent = '';
                 }, 1000);
             }
+        }
+
+        function showTip() {
+            document.querySelectorAll('.card').forEach(card => {
+                if (card.textContent == correctSyllables[0]) {
+                    card.classList.remove('glow');
+                    card.classList.add('glow');
+                }
+            });
+            const audio = new Audio(shuffleArray(tips_audio)[0]);
+            audio.play().catch(error => {
+                console.error('Error playing audio:', error);
+            });
         }
 
         function playAudio() {
@@ -170,7 +196,7 @@
             });
         }
 
-        function nextWord() {
+        function nextRound() {
             const wordDisplay = document.getElementById('wordDisplay');
             wordDisplay.classList.remove('celebration');
             currentWord = (currentWord + 1) % words.length;
