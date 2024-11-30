@@ -108,7 +108,11 @@
 
         function selectColor(card) {
             color = card.style.backgroundColor;
-            showFeedback(color === currentColor, card);
+            if (color === currentColor) {
+                showFeedback(true, card);
+            } else {
+                showFeedback(false, card);
+            }
         }
 
         function showFeedback(correct, card) {
