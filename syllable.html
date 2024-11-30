@@ -134,6 +134,7 @@
 
             if (syllable === correctSyllables[approvedSyllables.length]) {
                 approvedSyllables.push(syllable);
+                attempts = 0;
                 document.querySelectorAll('.card').forEach(card => card.classList.remove('glow'));
                 if (approvedSyllables.length === correctSyllables.length) {
                     showFeedback(true);
