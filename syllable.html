@@ -164,7 +164,7 @@
                 feedback.textContent = '💫 Попробуй еще раз! 💫';
                 if (attempts > 5) {
                     showTip();
-                    attempts = 0;
+                    // attempts = 0;
                 } else {
                     againAudio.play().catch(error => {
                         console.error('Error playing audio:', error);
@@ -180,7 +180,7 @@
                     selectedSyllables.pop(lastSyllable);
                     updateWordDisplay();
                     feedback.textContent = '';
-                }, 1000);
+                }, 500);
             }
         }
 

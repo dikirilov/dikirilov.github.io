@@ -133,7 +133,7 @@
             } else {
                 attempts++;
                 feedback.textContent = '💫 Попробуй еще раз! 💫';
-                if (attempts > 5) {
+                if (attempts > 3) {
                     showTip();
                 } else {
                     const audio = new Audio(shuffleArray(again_audio)[0]);
