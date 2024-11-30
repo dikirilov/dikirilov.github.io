@@ -127,7 +127,10 @@ h1 {
 }
 
 .celebration {
-    animation: celebrate 0.5s ease-in-out;
+    -webkit-animation: celebrate 1s ease-in-out;
+    animation: celebrate 1s ease-in-out;
+    border: 5px solid #93c5fd;
+    border-radius: 15px;
 }
 
 .glow {

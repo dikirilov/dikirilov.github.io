@@ -94,7 +94,7 @@
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.backgroundColor = color.value;
-                card.onclick = () => selectColor(color);
+                card.onclick = () => selectColor(card);
                 colorCards.appendChild(card);
             });
         }
@@ -103,15 +103,16 @@
             currentColor = colors[Math.floor(Math.random() * colors.length)];
         }
 
-        function selectColor(color) {
-            if (color === currentColor) {
+        function selectColor(card) {
+            color = card.style.backgroundColor;
+            showFeedback(color === currentColor, card);
+        }
+
+        function showFeedback(correct, card) {
+            if (correct) {
                 confetti();
                 feedback.textContent = '🎉 Отлично! 🌟';
-                document.querySelectorAll('.card').forEach(card => {
-                    if (card.style.backgroundColor === currentColor) {
-                        card.classList.add('celebration')l
-                    }
-                });
+                card.classList.add('celebration');
                 const audio = new Audio(shuffleArray(cheers_audio)[0]);
                 audio.play().catch(error => {
                     console.error('Error playing audio:', error);
