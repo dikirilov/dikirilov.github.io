@@ -108,7 +108,7 @@
 
         function selectColor(card) {
             color = card.style.backgroundColor;
-            if (color === currentColor) {
+            if (color === currentColor.value) {
                 showFeedback(true, card);
             } else {
                 showFeedback(false, card);
@@ -147,7 +147,7 @@
 
         function showTip() {
             document.querySelectorAll('.color-card').forEach(card => {
-                if (card.style.backgroundColor === currentColor) {
+                if (card.style.backgroundColor === currentColor.value) {
                     card.classList.remove('glow');
                     card.classList.add('glow');
                 }
