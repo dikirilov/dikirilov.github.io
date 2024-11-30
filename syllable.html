@@ -27,6 +27,7 @@
         let score = 0;
         let attempts = 0;
         let selectedSyllables = [];
+        let approvedSyllables = [];
         const tips_audio = fetchArrayFromJson('/audio/tips.json', 'tips');
         const again_audio = fetchArrayFromJson('/audio/again.json', 'again');
         const cheers_audio = fetchArrayFromJson('/audio/cheers.json', 'cheers');
@@ -67,6 +68,7 @@
 
         function startRound(autoplay) {
             selectedSyllables = [];
+            approvedSyllables = [];
             options = [];
             attempts = 0;
             
@@ -121,24 +123,22 @@
             cheerAudio.src = shuffleArray(cheers_audio)[0];
             againAudio.src = shuffleArray(again_audio)[0];
 
+            const currentWordObj = words[currentWord];
+            const correctSyllables = currentWordObj.syllables;
+
             selectedSyllables.push(syllable);
             card.classList.add('used');
             updateWordDisplay();
 
-            const currentWordObj = words[currentWord];
-            const correctSyllables = currentWordObj.syllables;
-
-            for (let i = 0; i < selectedSyllables.length; i++) {
-                if (selectedSyllables[i] !== correctSyllables[i]) {
-                    showFeedback(false);
-                    return;
+            if (syllable === correctSyllables[approvedSyllables.length]) {
+                approvedSyllables.push(syllable);
+                if (approvedSyllables.length === correctSyllables.length) {
+                    document.querySelectorAll('.card').forEach(card => card.classList.remove('glow'));
+                    showFeedback(true);
                 }
+            } else {
+                showFeedback(false);
             }
-
-            if (selectedSyllables.length === correctSyllables.length) {
-                showFeedback(true);
-            }
-            document.querySelectorAll('.card').forEach(card => card.classList.remove('glow'));
         }
 
         function showFeedback(correct) {
