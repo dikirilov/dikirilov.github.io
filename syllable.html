@@ -27,9 +27,9 @@
         let score = 0;
         let attempts = 0;
         let selectedSyllables = [];
-        const tip_audio = await fetchArrayFromJson('/audio/tips.json', 'tips');
-        const again_audio = await fetchArrayFromJson('/audio/again.json', 'again');
-        const cheers_audio = fawait fetchArrayFromJson('/audio/cheers.json', 'cheers');
+        const tip_audio = fetchArrayFromJson('/audio/tips.json', 'tips');
+        const again_audio = fetchArrayFromJson('/audio/again.json', 'again');
+        const cheers_audio = fetchArrayFromJson('/audio/cheers.json', 'cheers');
 
         // Load words from JSON file
         async function loadContent() {
@@ -153,11 +153,11 @@
                     document.getElementById('nextButton').style.display = 'block';
                 }, 750);
             } else {
+                attempts++;
                 if (attempts > 5) {
                     showTip();
                 }
                 feedback.textContent = '💫 Попробуй еще раз! 💫';
-                attempts++;
                 const audio = new Audio(shuffleArray(again_audio)[0]);
                 audio.play().catch(error => {
                     console.error('Error playing audio:', error);

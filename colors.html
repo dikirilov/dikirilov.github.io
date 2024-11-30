@@ -17,6 +17,7 @@
         <button class="play-button" onclick="playAudio()">▶️</button>
         <div class="color-cards" id="colorCards"></div>
         <div class="feedback" id="feedback"></div>
+        <center><button class="next-button" id="nextButton" onclick="nextRound()">Дальше →</button></center>
     </div>
 
     <script src="confetti.js"></script>
@@ -24,8 +25,9 @@
     <script>
         let colors = [];
         let options = [];
-        const again_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/again.json', 'again');
-        const cheers_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/cheers.json', 'cheers');
+        let attempts = 0;
+        const again_audio = await fetchArrayFromJson('https://dikirilov.github.io/audio/again.json', 'again');
+        const cheers_audio = await fetchArrayFromJson('https://dikirilov.github.io/audio/cheers.json', 'cheers');
 
         let currentColor = null;
         let currentLanguage = 'ru';
@@ -44,7 +46,7 @@
             }
         }
 
-        function fetchArrayFromJson(url, paramName) {
+        async function fetchArrayFromJson(url, paramName) {
             const get_url = url + '?v=' + new Date().getTime();
             try {
                 const response = await fetch(get_url);
@@ -58,7 +60,7 @@
         }
 
         async function loadColors() {
-            colors = fetchArrayFromJson('colors.json', 'colors');
+            colors = await fetchArrayFromJson('colors.json', 'colors');
             startRound();
         }
 
@@ -71,6 +73,7 @@
         }
 
         function startRound() {
+            attempts = 0;
             selectRandomColor();
 
             const otherColors = colors.filter(s => s.value != currentColor.value);
@@ -103,17 +106,47 @@
         function selectColor(color) {
             if (color === currentColor) {
                 confetti();
+                feedback.textContent = '🎉 Отлично! 🌟';
+                document.querySelectorAll('.card').forEach(card => {
+                    if (card.style.backgroundColor === currentColor) {
+                        card.classList.add('celebration')l
+                    }
+                });
                 const audio = new Audio(shuffleArray(cheers_audio)[0]);
                 audio.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
-                startRound();
+                setTimeout(() => {
+                    startRound();
+                }, 1000);
             } else {
-                const audio = new Audio(shuffleArray(again_audio)[0]);
-                audio.play().catch(error => {
-                    console.error('Error playing audio:', error);
-                });
+                attempts++;
+                feedback.textContent = '💫 Попробуй еще раз! 💫';
+                if (attempts > 5) {
+                    showTip();
+                } else {
+                    const audio = new Audio(shuffleArray(again_audio)[0]);
+                    audio.play().catch(error => {
+                        console.error('Error playing audio:', error);
+                    });
+                }
+                setTimeout(() => {
+                    feedback.textContent = '';
+                }, 1000);
             }
+        }
+
+        function showTip() {
+            document.querySelectorAll('.card').forEach(card => {
+                if (card.textContent == correctSyllables[0]) {
+                    card.classList.remove('glow');
+                    card.classList.add('glow');
+                }
+            });
+            const audio = new Audio(shuffleArray(tips_audio)[0]);
+            audio.play().catch(error => {
+                console.error('Error playing audio:', error);
+            });
         }
 
         loadColors();
