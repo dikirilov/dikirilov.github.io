@@ -92,6 +92,8 @@
 
         function displayRoundStart() {
             const colorCards = document.getElementById('colorCards');
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('nextButton').style.display = 'none';
             colorCards.innerHTML = '';
             options.forEach(color => {
                 const card = document.createElement('div');
