@@ -1,3 +1,7 @@
 {
-  "tips": ["/audio/tip-1.m4a"]
+  "tips": [
+    "/audio/tips/tip-1.m4a", 
+    "/audio/tips/tip-2.m4a", 
+    "/audio/tips/tip-3.m4a"
+  ]
 }

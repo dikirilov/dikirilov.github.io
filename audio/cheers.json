@@ -1,3 +1,9 @@
 {
-  "cheers": ["/audio/cheers-1.m4a", "/audio/cheers-2.m4a"]
+  "cheers": [
+      "/audio/cheers/cheers-1.m4a", 
+      "/audio/cheers/cheers-2.m4a", 
+      "/audio/cheers/cheers-3.m4a", 
+      "/audio/cheers/cheers-4.m4a", 
+      "/audio/cheers/cheers-5.m4a"
+    ]
 }
