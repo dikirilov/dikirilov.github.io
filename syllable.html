@@ -141,14 +141,12 @@
             if (correct) {
                 feedback.textContent = '🎉 Отлично! 🌟';
                 wordDisplay.classList.add('celebration');
-                // addFireworks(document.body);
                 confetti();
                 const audio = new Audio(shuffleArray(cheers_audio)[0]);
                 audio.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
                 score++;
-                // document.getElementById('score').textContent = score;
                 setTimeout(() => {
                     document.getElementById('nextButton').style.display = 'block';
                 }, 750);
@@ -177,6 +175,7 @@
         }
 
         function showTip() {
+            const correctSyllables = currentWordObj.syllables;
             document.querySelectorAll('.card').forEach(card => {
                 if (card.textContent == correctSyllables[0]) {
                     card.classList.remove('glow');

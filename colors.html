@@ -109,6 +109,7 @@
         }
 
         function showFeedback(correct, card) {
+            const feedback = document.getElementById('feedback');
             if (correct) {
                 confetti();
                 feedback.textContent = '🎉 Отлично! 🌟';
@@ -139,7 +140,7 @@
 
         function showTip() {
             document.querySelectorAll('.card').forEach(card => {
-                if (card.textContent == correctSyllables[0]) {
+                if (card.style.backgroundColor == currentColor) {
                     card.classList.remove('glow');
                     card.classList.add('glow');
                 }
