@@ -15,6 +15,24 @@ body {
     padding: 10px;
 }
 
+.language-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.flag {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.flag.active {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
 h1 {
     font-size: clamp(24px, 5vw, 32px);
     margin: 10px 0;
@@ -76,6 +94,33 @@ h1 {
 .card.used {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.color-card {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 1px solid #ddd;
+}
+
+.color-card:active {
+    transform: scale(0.95);
+}
+
+@media (hover: hover) {
+    .color-card:hover {
+        transform: scale(1.05);
+    }
+}
+
+.color-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 15px 0;
 }
 
 .play-button {

@@ -26,8 +26,11 @@
         let colors = [];
         let options = [];
         let attempts = 0;
-        const again_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/again.json', 'again');
-        const cheers_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/cheers.json', 'cheers');
+        fetchArrayFromJson('/audio/tips.json', 'tips').then(result => tips_audio = result);
+        fetchArrayFromJson('/audio/again.json', 'again').then(result => again_audio = result);
+        fetchArrayFromJson('/audio/cheers.json', 'cheers').then(result => cheers_audio = result);
+        let cheerAudio = new Audio();
+        let againAudio = new Audio();
 
         let currentColor = null;
         let currentLanguage = 'ru';
@@ -92,7 +95,7 @@
             colorCards.innerHTML = '';
             options.forEach(color => {
                 const card = document.createElement('div');
-                card.className = 'card';
+                card.className = 'color-card';
                 card.style.backgroundColor = color.value;
                 card.onclick = () => selectColor(card);
                 colorCards.appendChild(card);
