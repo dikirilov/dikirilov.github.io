@@ -26,8 +26,8 @@
         let colors = [];
         let options = [];
         let attempts = 0;
-        const again_audio = await fetchArrayFromJson('https://dikirilov.github.io/audio/again.json', 'again');
-        const cheers_audio = await fetchArrayFromJson('https://dikirilov.github.io/audio/cheers.json', 'cheers');
+        const again_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/again.json', 'again');
+        const cheers_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/cheers.json', 'cheers');
 
         let currentColor = null;
         let currentLanguage = 'ru';
@@ -59,7 +59,7 @@
             }
         }
 
-        async function loadColors() {
+        async function loadContent() {
             colors = await fetchArrayFromJson('colors.json', 'colors');
             startRound();
         }
@@ -90,7 +90,7 @@
         function displayRoundStart() {
             const colorCards = document.getElementById('colorCards');
             colorCards.innerHTML = '';
-            shuffledColors.forEach(color => {
+            options.forEach(color => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.backgroundColor = color.value;
@@ -149,7 +149,7 @@
             });
         }
 
-        loadColors();
+        loadContent();
     </script>
 </body>
 </html>
