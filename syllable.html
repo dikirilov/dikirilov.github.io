@@ -179,6 +179,8 @@
         }
 
         function showTip() {
+            const len = selectedSyllables.length;
+            const correctSyllables = words[currentWord].syllables;
             const nextSyllable = words[currentWord].syllables[selectedSyllables.length];
             document.querySelectorAll('.card').forEach(card => {
                 if (card.textContent === nextSyllable) {
