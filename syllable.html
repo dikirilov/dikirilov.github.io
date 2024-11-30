@@ -39,7 +39,7 @@
                 .reduce((allSyllables, word) => [...allSyllables, ...word.syllables], [])
                 .filter((syllable, index, array) => array.indexOf(syllable) === index);
             
-            startRound();
+            startRound(false);
         }
 
         async function fetchArrayFromJson(url, paramName) {
@@ -63,7 +63,7 @@
             return array;
         }
 
-        function startRound() {
+        function startRound(autoplay) {
             selectedSyllables = [];
             options = [];
             attempts = 0;
@@ -76,10 +76,10 @@
 
             options = shuffleArray([...words[currentWord].syllables, ...additionalSyllables]);
 
-            displayRoundStart();
+            displayRoundStart(autoplay);
         }
 
-        function displayRoundStart() {
+        function displayRoundStart(autoplay) {
             const syllableCards = document.getElementById('syllableCards');
             const wordDisplay = document.getElementById('wordDisplay');
             
@@ -97,7 +97,9 @@
             document.getElementById('feedback').textContent = '';
             document.getElementById('nextButton').style.display = 'none';
 
-            playAudio();
+            if (autoplay) {
+                playAudio();
+            };
         }
 
         function updateWordDisplay() {
@@ -199,7 +201,7 @@
             const wordDisplay = document.getElementById('wordDisplay');
             wordDisplay.classList.remove('celebration');
             currentWord = (currentWord + 1) % words.length;
-            startRound();
+            startRound(true);
         }
 
         // Start the game by loading words
