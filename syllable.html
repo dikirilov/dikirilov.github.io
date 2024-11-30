@@ -4,140 +4,7 @@
     <title>Учим слоги!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="180x180" href="/favicon.ico">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
-    </style>
-    <style>
-        body {
-            font-family: "Roboto Mono", monospace;
-            background-color: #f0f9ff;
-            margin: 0;
-            padding: 10px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-            padding: 10px;
-        }
-
-        h1 {
-            font-size: clamp(24px, 5vw, 32px);
-            margin: 10px 0;
-        }
-
-        .score {
-            font-size: clamp(18px, 4vw, 24px);
-            color: #2563eb;
-            margin: 15px 0;
-        }
-
-        .word-display {
-            min-height: 60px;
-            margin: 15px 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px;
-        }
-
-        .selected-syllable {
-            background: #93c5fd;
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: clamp(24px, 6vw, 48px);
-            display: inline-block;
-        }
-
-        .syllable-cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin: 15px 0;
-        }
-
-        .card {
-            background: white;
-            border: 3px solid #93c5fd;
-            border-radius: 15px;
-            padding: 12px 20px;
-            font-size: clamp(24px, 6vw, 48px);
-            cursor: pointer;
-            transition: transform 0.2s;
-            touch-action: manipulation;
-        }
-
-        .card:active {
-            transform: scale(0.95);
-        }
-
-        @media (hover: hover) {
-            .card:hover {
-                transform: scale(1.05);
-            }
-        }
-
-        .card.used {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .play-button {
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: clamp(18px, 4vw, 24px);
-            cursor: pointer;
-            margin: 15px;
-            transition: transform 0.2s;
-            touch-action: manipulation;
-        }
-
-        .play-button:active {
-            transform: scale(0.95);
-        }
-
-        @media (hover: hover) {
-            .play-button:hover {
-                transform: scale(1.1);
-            }
-        }
-
-        .feedback {
-            font-size: clamp(18px, 4vw, 24px);
-            margin: 15px;
-            min-height: 30px;
-        }
-
-        .next-button {
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 20px;
-            font-size: clamp(16px, 3.5vw, 20px);
-            cursor: pointer;
-            display: none;
-            touch-action: manipulation;
-        }
-
-        @keyframes celebrate {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        .celebration {
-            animation: celebrate 0.5s ease-in-out;
-        }
-    </style>
+    <link rel="stylesheet" href="common.css">
 </head>
 <body>
     <div class="container">
@@ -154,28 +21,34 @@
 
     <script>
         let words = [];
+        let options = [];
         let syllables = [];
         let currentWord = 0;
         let score = 0;
         let selectedSyllables = [];
-        const again_audio = '/audio/again.m4a';
-        const cheers_audio = ['/audio/cheers-1.m4a', '/audio/cheers-2.m4a'];
+        const again_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/again.json', 'again');
+        const cheers_audio = fetchArrayFromJson('https://dikirilov.github.io/audio/cheers.json', 'cheers');
 
         // Load words from JSON file
-        async function loadWords() {
+        async function loadContent() {
+            words = shuffleArray(fetchArrayFromJson('https://dikirilov.github.io/words.json'), 'words');
+            // Extract unique syllables
+            syllables = words
+                .reduce((allSyllables, word) => [...allSyllables, ...word.syllables], [])
+                .filter((syllable, index, array) => array.indexOf(syllable) === index);
+            
+            startRound();
+        }
+
+        function fetchArrayFromJson(url, paramName) {
+            const get_url = url + '?v=' + new Date().getTime();
             try {
-                const response = await fetch('words.json?v=' + new Date().getTime());
+                const response = await fetch(get_url);
                 const data = await response.json();
-                words = shuffleArray(data.words);
-                
-                // Extract unique syllables
-                syllables = words
-                    .reduce((allSyllables, word) => [...allSyllables, ...word.syllables], [])
-                    .filter((syllable, index, array) => array.indexOf(syllable) === index);
-                
-                displayWord();
+                array = data[paramName];
+                return array;
             } catch (error) {
-                console.error('Error loading words:', error);
+                console.error('Error loading content (URL: :', get_url, ', paramName: ', paramName, '): ' error);
                 document.getElementById('feedback').textContent = 'Ошибка загрузки данных';
             }
         }
@@ -188,13 +61,9 @@
             return array;
         }
 
-        function displayWord() {
-            const syllableCards = document.getElementById('syllableCards');
-            const wordDisplay = document.getElementById('wordDisplay');
-            
-            syllableCards.innerHTML = '';
-            wordDisplay.innerHTML = '';
+        function startRound() {
             selectedSyllables = [];
+            options = [];
             
             const otherSyllables = syllables.filter(s => !words[currentWord].syllables.includes(s));
             const randomCount = Math.floor(Math.random() * 3) + 3;
@@ -202,9 +71,19 @@
                 .sort(() => Math.random() - 0.5)
                 .slice(0, Math.min(randomCount, otherSyllables.length));
 
-            const shuffledSyllables = shuffleArray([...words[currentWord].syllables, ...additionalSyllables]);
+            options = shuffleArray([...words[currentWord].syllables, ...additionalSyllables]);
+
+            displayRoundStart();
+        }
+
+        function displayRoundStart() {
+            const syllableCards = document.getElementById('syllableCards');
+            const wordDisplay = document.getElementById('wordDisplay');
             
-            shuffledSyllables.forEach(syllable => {
+            syllableCards.innerHTML = '';
+            wordDisplay.innerHTML = '';
+
+            options.forEach(syllable => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.textContent = syllable;
@@ -214,6 +93,8 @@
 
             document.getElementById('feedback').textContent = '';
             document.getElementById('nextButton').style.display = 'none';
+
+            playAudio();
         }
 
         function updateWordDisplay() {
@@ -264,14 +145,16 @@
                 });
                 score++;
                 // document.getElementById('score').textContent = score;
-                document.getElementById('nextButton').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('nextButton').style.display = 'block';
+                }, 750);
             } else {
                 feedback.textContent = '💫 Попробуй еще раз! 💫';
+                const audio = new Audio(shuffleArray(again_audio)[0]);
+                audio.play().catch(error => {
+                    console.error('Error playing audio:', error);
+                });
                 setTimeout(() => {
-                    const audio = new Audio(again_audio);
-                    audio.play().catch(error => {
-                        console.error('Error playing audio:', error);
-                    });
                     selectedSyllables = [];
                     updateWordDisplay();
                     document.querySelectorAll('.card').forEach(card => card.classList.remove('used'));
@@ -291,11 +174,11 @@
             const wordDisplay = document.getElementById('wordDisplay');
             wordDisplay.classList.remove('celebration');
             currentWord = (currentWord + 1) % words.length;
-            displayWord();
+            startRound();
         }
 
         // Start the game by loading words
-        loadWords();
+        loadContent();
     </script>
 </body>
 </html>
