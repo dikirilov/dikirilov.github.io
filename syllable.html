@@ -161,12 +161,13 @@
                 attempts++;
                 if (attempts > 5) {
                     showTip();
+                    attempts = 0;
                 }
                 feedback.textContent = '💫 Попробуй еще раз! 💫';
                 setTimeout(() => {
                     lastSyllable = selectedSyllables[selectedSyllables.length-1]
                     document.querySelectorAll('.card').forEach(card => {
-                        if (card.textContent == lastSyllable) {
+                        if (card.textContent === lastSyllable) {
                             card.classList.remove('used');
                         }
                     });
@@ -178,9 +179,9 @@
         }
 
         function showTip() {
-            const correctSyllables = words[currentWord].syllables;
+            const nextSyllable = words[currentWord].syllables[selectedSyllables.length];
             document.querySelectorAll('.card').forEach(card => {
-                if (card.textContent == correctSyllables[selectedSyllables.length]) {
+                if (card.textContent === nextSyllable) {
                     card.classList.remove('glow');
                     card.classList.add('glow');
                 }
