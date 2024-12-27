@@ -99,6 +99,7 @@
             options.forEach(figure => {
                 const card = document.createElement('div');
                 card.className = 'color-card';
+                card.classList.add('big-figure')
                 card.textContent = figure.value;
                 card.onclick = () => selectFigure(card);
                 figureCards.appendChild(card);

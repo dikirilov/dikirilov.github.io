@@ -165,6 +165,10 @@ h1 {
     touch-action: manipulation;
 }
 
+.big-figure {
+    font-size: clamp(48px, 3.5vw, 60px);
+}
+
 @keyframes celebrate {
     0% { transform: scale(1); }
     50% { transform: scale(1.2); }
