@@ -99,7 +99,7 @@
             options.forEach(figure => {
                 const card = document.createElement('div');
                 card.className = 'color-card';
-                card.text = figure.value;
+                card.textContent = figure.value;
                 card.onclick = () => selectFigure(card);
                 figureCards.appendChild(card);
             });
@@ -110,7 +110,7 @@
         }
 
         function selectFigure(card) {
-            figure = card.text;
+            figure = card.textContent;
             if (figure === currentFigure.value) {
                 showFeedback(true, card);
             } else {
@@ -154,7 +154,7 @@
 
         function showTip() {
             document.querySelectorAll('.color-card').forEach(card => {
-                if (card.text === currentFigure.value) {
+                if (card.textContent === currentFigure.value) {
                     card.classList.remove('glow');
                     card.classList.add('glow');
                 }
