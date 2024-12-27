@@ -6,7 +6,7 @@ const urlsToCache = [
   "/syllable.html",
   "/words.json",
   "/figures.html",
-  "/figures.json"
+  "/figures.json",
   "/common.css",
   "/confetti.js",
   "/favicon.ico",
@@ -55,7 +55,7 @@ const urlsToCache = [
   "/audio/syllables/ПАША.m4a",
   "/audio/syllables/САША.m4a",
   "/audio/syllables/СВЕТА.m4a",
-  "/audio/syllables/ТАНЯ.m4a",
+  "/audio/syllables/ТАНЯ.m4a"
 ];
 
 // Install event: cache resources
