@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Учим цвета!</title>
+    <title>Учим фигуры!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="180x180" href="/favicon.ico">
     <link rel="stylesheet" href="common.css">
 </head>
 <body>
     <div class="container">
-        <h1>Учим цвета 🎨</h1>
+        <h1>Учим фигуры!</h1>
         <div class="language-selector">
             <img src="https://cdn.countryflags.com/thumbs/russia/flag-800.png" height="24px" alt="Russian" class="flag active" data-lang="ru" onclick="setLanguage('ru')">
             <img src="https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png" height="24px" alt="English" class="flag" data-lang="en" onclick="setLanguage('en')">
             <img src="https://cdn.countryflags.com/thumbs/germany/flag-800.png" height="24px" alt="German" class="flag" data-lang="de" onclick="alert('Надо добавить аудио на немецком!')">
         </div>
         <button class="play-button" onclick="playAudio()">▶️</button>
-        <div class="color-cards" id="colorCards"></div>
+        <div class="color-cards" id="figureCards"></div>
         <div class="feedback" id="feedback"></div>
         <center><button class="next-button" id="nextButton" onclick="nextRound()">Дальше →</button></center>
     </div>
@@ -24,7 +24,7 @@
     <script src="confetti.js"></script>
 
     <script>
-        let colors = [];
+        let figures = [];
         let options = [];
         let attempts = 0;
         fetchArrayFromJson('/audio/tips.json', 'tips').then(result => tips_audio = result);
@@ -33,7 +33,7 @@
         let cheerAudio = new Audio();
         let againAudio = new Audio();
 
-        let currentColor = null;
+        let currentFigure = null;
         let currentLanguage = 'ru';
 
         function setLanguage(lang) {
@@ -43,8 +43,8 @@
         }
 
         function playAudio() {
-            if (currentColor) {
-                const audioUrl = currentColor.audioUrls[currentLanguage];
+            if (currentFigure) {
+                const audioUrl = currentFigure.audioUrls[currentLanguage];
                 const audio = new Audio(audioUrl);
                 audio.play().catch(console.error);
             }
@@ -64,7 +64,7 @@
         }
 
         async function loadContent() {
-            colors = await fetchArrayFromJson('colors.json', 'colors');
+            figures = await fetchArrayFromJson('figures.json', 'figures');
             startRound();
         }
 
@@ -78,40 +78,40 @@
 
         function startRound() {
             attempts = 0;
-            selectRandomColor();
+            selectRandomFigure();
 
-            const otherColors = colors.filter(s => s.value != currentColor.value);
+            const otherFigures = figures.filter(s => s.value != currentFigure.value);
             const randomCount = Math.floor(Math.random() * 3) + 3;
-            const additionalColors = otherColors
+            const additionalFigures = otherFigures
                 .sort(() => Math.random() - 0.5)
-                .slice(0, Math.min(randomCount, otherColors.length));
-            options = shuffleArray([...additionalColors, currentColor]);
+                .slice(0, Math.min(randomCount, otherFigures.length));
+            options = shuffleArray([...additionalFigures, currentFigure]);
 
             displayRoundStart();
             playAudio();
         }
 
         function displayRoundStart() {
-            const colorCards = document.getElementById('colorCards');
+            const figureCards = document.getElementById('figureCards');
             document.getElementById('feedback').textContent = '';
             document.getElementById('nextButton').style.display = 'none';
-            colorCards.innerHTML = '';
-            options.forEach(color => {
+            figureCards.innerHTML = '';
+            options.forEach(figure => {
                 const card = document.createElement('div');
                 card.className = 'color-card';
-                card.style.backgroundColor = color.value;
-                card.onclick = () => selectColor(card);
-                colorCards.appendChild(card);
+                card.text = figure.value;
+                card.onclick = () => selectFigure(card);
+                figureCards.appendChild(card);
             });
         }
 
-        function selectRandomColor() {
-            currentColor = colors[Math.floor(Math.random() * colors.length)];
+        function selectRandomFigure() {
+            currentFigure = figures[Math.floor(Math.random() * figures.length)];
         }
 
-        function selectColor(card) {
-            color = card.style.backgroundColor;
-            if (color === currentColor.value) {
+        function selectFigure(card) {
+            figure = card.text;
+            if (figure === currentFigure.value) {
                 showFeedback(true, card);
             } else {
                 showFeedback(false, card);
@@ -154,7 +154,7 @@
 
         function showTip() {
             document.querySelectorAll('.color-card').forEach(card => {
-                if (card.style.backgroundColor === currentColor.value) {
+                if (card.text === currentFigure.value) {
                     card.classList.remove('glow');
                     card.classList.add('glow');
                 }

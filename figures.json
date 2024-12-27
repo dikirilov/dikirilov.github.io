@@ -1,0 +1,59 @@
+{
+  "figures": [
+    {
+      "name": {"en": "square", "ru": "квадрат", "de": "Quadrat"},
+      "value": "▢",
+      "audioUrls": {"en": "/audio/figures/en-square.m4a", "ru": "/audio/colors/ru-square.m4a", "de": "/audio/colors/de-square.m4a"}
+    },
+    {
+      "name": {"en": "triangle", "ru": "треугольник", "de": "Dreieck"},
+      "value": "△",
+      "audioUrls": {"en": "/audio/figures/en-triangle.m4a", "ru": "/audio/colors/ru-triangle.m4a", "de": "/audio/colors/de-triangle.m4a"}
+    },
+    {
+      "name": {"en": "circle", "ru": "круг", "de": "Kreis"},
+      "value": "○",
+      "audioUrls": {"en": "/audio/figures/en-circle.m4a", "ru": "/audio/colors/ru-circle.m4a", "de": "/audio/colors/de-circle.m4a"}
+    },
+    {
+      "name": {"en": "line", "ru": "линия", "de": "Linie"},
+      "value": "|",
+      "audioUrls": {"en": "/audio/figures/en-line.m4a", "ru": "/audio/colors/ru-line.m4a", "de": "/audio/colors/de-line.m4a"}
+    },
+    {
+      "name": {"en": "rectangle", "ru": "прямоугольник", "de": "Rechteck"},
+      "value": "▭",
+      "audioUrls": {"en": "/audio/figures/en-rectangle.m4a", "ru": "/audio/colors/ru-rectangle.m4a", "de": "/audio/colors/de-rectangle.m4a"}
+    },
+    {
+      "name": {"en": "star", "ru": "звезда", "de": "Stern"},
+      "value": "⭐︎",
+      "audioUrls": {"en": "/audio/figures/en-star.m4a", "ru": "/audio/colors/ru-star.m4a", "de": "/audio/colors/de-star.m4a"}
+    },
+    {
+      "name": {"en": "heart", "ru": "сердце", "de": "Herz"},
+      "value": "♥",
+      "audioUrls": {"en": "/audio/figures/en-heart.m4a", "ru": "/audio/colors/ru-heart.m4a", "de": "/audio/colors/de-heart.m4a"}
+    },
+    {
+      "name": {"en": "diamond", "ru": "ромб", "de": "Raute"},
+      "value": "◇",
+      "audioUrls": {"en": "/audio/figures/en-diamond.m4a", "ru": "/audio/colors/ru-diamond.m4a", "de": "/audio/colors/de-diamond.m4a"}
+    },
+    {
+      "name": {"en": "arrow", "ru": "стрелка", "de": "Pfeil"},
+      "value": "↑",
+      "audioUrls": {"en": "/audio/figures/en-arrow.m4a", "ru": "/audio/colors/ru-arrow.m4a", "de": "/audio/colors/de-arrow.m4a"}
+    },
+    {
+      "name": {"en": "cross", "ru": "крест", "de": "Kreuz"},
+      "value": "⨯",
+      "audioUrls": {"en": "/audio/figures/en-cross.m4a", "ru": "/audio/colors/ru-cross.m4a", "de": "/audio/colors/de-cross.m4a"}
+    },
+    {
+      "name": {"en": "plus", "ru": "плюс", "de": "Plus"},
+      "value": "+",
+      "audioUrls": {"en": "/audio/figures/en-plus.m4a", "ru": "/audio/colors/ru-plus.m4a", "de": "/audio/colors/de-plus.m4a"}
+    }
+  ]
+}
