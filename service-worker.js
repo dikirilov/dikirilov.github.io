@@ -1,6 +1,7 @@
 const CACHE_NAME = "my-pwa-cache-v1";
 const urlsToCache = [
   "/index.html",
+  "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap",
   "/colors.html",
   "/colors.json",
   "/syllable.html",
